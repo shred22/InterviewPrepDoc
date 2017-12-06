@@ -1,0 +1,930 @@
+#-- Initial capacity of ArrayList is 10.
+
+#-- Initial capacity of HashMap is 16.
+
+#--ArrayList vs LinkedList
+
+ArrayList and LinkedList both implements List interface and their methods and results are almost identical. However there are few differences between them which make one better over another depending on the requirement.
+
+ArrayList Vs LinkedList
+
+1) Search: ArrayList search operation is pretty fast compared to the LinkedList search operation. get(int index) in ArrayList gives the performance of O(1) while LinkedList performance is O(n).
+
+Reason: ArrayList maintains index based system for its elements as it uses array data structure implicitly which makes it faster for searching an element in the list. On the other side LinkedList implements doubly linked list which requires the traversal through all the elements for searching an element.
+
+2) Deletion: LinkedList remove operation gives O(1) performance while ArrayList gives variable performance: O(n) in worst case (while removing first element) and O(1) in best case (While removing last element).
+
+Conclusion: LinkedList element deletion is faster compared to ArrayList.
+
+Reason: LinkedList’s each element maintains two pointers (addresses) which points to the both neighbor elements in the list. Hence removal only requires change in the pointer location in the two neighbor nodes (elements) of the node which is going to be removed. While In ArrayList all the elements need to be shifted to fill out the space created by removed element.
+
+3) Inserts Performance: LinkedList add method gives O(1) performance while ArrayList gives O(n) in worst case. Reason is same as explained for remove.
+
+4) Memory Overhead: ArrayList maintains indexes and element data while LinkedList maintains element data and two pointers for neighbor nodes hence the memory consumption is high in LinkedList comparatively.
+
+There are few similarities between these classes which are as follows:
+
+Both ArrayList and LinkedList are implementation of List interface.
+They both maintain the elements insertion order which means while displaying ArrayList and LinkedList elements the result set would be having the same order in which the elements got inserted into the List.
+Both these classes are non-synchronized and can be made synchronized explicitly by using Collections.synchronizedList method.
+The iterator and listIterator returned by these classes are fail-fast (if list is structurally modified at any time after the iterator is created, in any way except through the iterator’s own remove or add methods, the iterator will throw a ConcurrentModificationException).
+When to use LinkedList and when to use ArrayList?
+
+1) As explained above the insert and remove operations give good performance (O(1)) in LinkedList compared to ArrayList(O(n)). Hence if there is a requirement of frequent addition and deletion in application then LinkedList is a best choice.
+
+2) Search (get method) operations are fast in Arraylist (O(1)) but not in LinkedList (O(n)) so If there are less add and remove operations and more search operations requirement, ArrayList would be your best bet.
+
+
+
+#-- ArrayList vs  Vector
+
+1) First and most common difference between Vector vs ArrayList is that Vector is synchronized and thread-safe while ArrayList is neither Synchronized nor thread-safe. Now, What does that mean? It means if multiple thread try to access Vector same time they can do that without compromising Vector's internal state. Same is not true in case of ArrayList as methods like add(), remove() or get() is not synchronized.
+
+2) Second major difference on Vector vs ArrayList is Speed, which is directly related to previous difference. Since Vector is synchronized, its slow and ArrayList is not synchronized its faster than Vector.
+
+3) Third difference on Vector vs ArrayList is that Vector is a legacy class and initially it was not part of Java Collection Framework. From Java 1.4 Vector was retrofitted to implement List interface and become part of Collection Framework.
+
+#--Difference between HashMap and Hashtable
+
+Though both Hashtable and HashMap are data-structure based upon hashing and implementation of Map interface, the main difference between them is that HashMap is not thread-safe but Hashtable is thread-safe. Another difference is HashMap allows one null key and null values but Hashtable doesn't allow null key or values. Hashtable is a legacy class and is now replaced with ConcurrentHashMap.
+
+An Enumerator can be obtained on Hashtable to iterate over the elements but not on HashMap, if you want to iterate HashMap you need to get the keySet() and then iterate over it which is a fail fast iterator.
+
+#--Difference between fail-fast Iterator vs fail-safe Iterator in Java
+
+Fail-fast Iterators
+As name suggest fail-fast Iterators fail as soon as they realized that structure of Collection has been changed since iteration has begun. Structural changes means adding, removing or updating any element from collection while one thread is Iterating over that collection. fail-fast behavior is implemented by keeping a modification count and if iteration thread realizes the change in modification count it throws ConcurrentModificationException.
+
+Fail-safe Iterator in java
+
+Contrary to fail-fast Iterator, fail-safe iterator doesn't throw any Exception if Collection is modified structurally while one thread is Iterating over it because they work on clone of Collection instead of original collection and that’s why they are called as fail-safe iterator. Iterator of CopyOnWriteArrayList is an example of fail-safe Iterator, also iterator written by ConcurrentHashMap keySet is also fail-safe iterator and never throw ConcurrentModificationException in Java.
+
+#--Why Java doesn't support multiple inheritance
+1. First reason is ambiguity around Diamond problem, consider a class A has foo() method and then B and C derived from A and has there own foo() implementation and now class D derive from B and C using multiple inheritance and if we refer just foo() compiler will not be able to decide which foo() it should invoke.
+
+2. Second and more convincing reason to me is that multiple inheritances does complicate the design and creates problem during casting, constructor chaining etc 
+
+
+#--Example of unchecked Exception in Java API
+
+Unchecked Exception List
+
+ArrayIndexOutOfBoundsException
+ClassCastException
+IllegalArgumentException
+IllegalStateException
+NullPointerException
+NumberFormatException
+AssertionError
+ExceptionInInitializerError
+StackOverflowError
+NoClassDefFoundError
+
+Checked Exception List
+
+Exception
+IOException
+FileNotFoundException
+ParseException
+ClassNotFoundException
+CloneNotSupportedException
+InstantiationException
+InterruptedException
+NoSuchMethodException
+NoSuchFieldException
+
+#-- Why wait(), notify(), notifyAll() methods are part of Object class
+
+Java provides inter-thread communication using the following methods of the Object class.
+
+wait()
+notify()
+notifyAll()
+
+These methods are implemented as final method in the Object class thus available to all the classes, as Object class is the super class of all the classes in Java.
+
+Another important point about these methods is that they can only be called from a synchronized context, as these methods are about releasing the monitor and acquiring it again. Threads acquire monitor(lock) when entering a synchronized method (or block) so it makes sense to call them from synchronized context.
+
+wait() method
+
+Wait method tells the current thread (thread which is executing code inside a synchronized method or block) to give up monitor and go to sleep, until another thread invokes the notify() or notifyAll() method for this object.
+
+General form of wait method
+
+public final void wait() throws InterruptedException
+There are two more overloaded wait methods
+
+public final void wait(long timeout) throws InterruptedException
+Causes the current thread to wait until either another thread invokes the notify() method or the notifyAll() method for this object, or a specified amount of time has elapsed.
+
+public final void wait(long timeout, int nanos) throws InterruptedException
+Causes the current thread to wait until another thread invokes the notify() method or the notifyAll() method for this object, or some other thread interrupts the current thread, or a certain amount of real time has elapsed.
+
+notify() method
+
+Wakes up a single thread that is waiting on this object's monitor. If more than one threads are waiting on this object, one of them is chosen to be awakened. The choice is arbitrary and occurs at the discretion of the implementation.
+
+Note: that the thread which comes out of waiting because of the notify() method will not be able to proceed until the current thread relinquishes the lock on this object. The awakened thread just changes to the runnable state and it is ready to be scheduled again. The awakened thread will compete in the usual manner with any other threads that might be actively competing to synchronize on this object; for example, the awakened thread enjoys no reliable privilege or disadvantage in being the next thread to lock this object.
+
+Once awakened thread(thread which has come out of waiting because of notify() method) has gained control of the object, all its synchronization claims on the object are restored to the situation as of the time that the wait method was invoked that is on return from the wait method, the synchronization state of the object and of thread is exactly as it was when the wait method was invoked.
+
+notifyAll() method
+
+wakes up all the threads that called wait() on the same object. As explained in notify() any one of the threads will be granted access to the object.
+
+So you see wait() and notify() methods work at the monitor level, thread which is currently holding the monitor is asked to give up that monitor through wait() method and through notify method (or notifyAll) threads which are waiting on the object's monitor are notified that threads can wake up.
+
+Important point to note here is that monitor is assigned to an object not to a particular thread. That's one reason why these methods are in Object class.
+To reiterate threads wait on an Object's monitor (lock) and notify() is also called on an object to wake up a thread waiting on the Object's monitor.
+
+wait(), notify() and notifyAll() are used for inter-thread communication. But threads themselves have no knowledge of each others status. It is the shared object among the threads that acts as a communicator among the threads.
+Threads lock an object, wait on an object and notify an object. When a wait method is called it checks which thread has the lock on the object and that is the thread which has to give up the lock. Same way notify() method when called looks for all the thread that are waiting to get hold of the Object's monitor and wakes one of the thread, notifyAll() wakes up all the thread that are waiting on an Object's monitor.
+
+So it is shared object among the thread which allows them to communicate with each other and wait(), notify() and notifyAll() are the methods used for inter-thread communication.
+
+Spurious wakeup
+
+Once wait is called on an object the thread that is currently executing with in the synchronized context waits until notify() or notifyAll() method is called. But there is a possibility that a waiting thread resumes again even when notify() or notifyAll() are not called (this will rarely occur in practice). This is known as spurious wakeup.
+
+To guard against spurious wakeup the recommendation is that call to wait() method should be with in a loop that checks the condition on which the thread is waiting.
+
+synchronized (obj) {
+    while (condition does not hold)
+        obj.wait(timeout);
+        ... // Perform action appropriate to condition
+}
+
+
+#-- join() method in Thread class
+
+We can use join() method to ensure all threads that started from main must end in order in which they started and also main should end in last.In other words waits for this thread to die. 
+
+Calling join() method internally calls join(0),  And timeout of 0 means to wait forever;
+
+
+To achieve we are going to create 2 threads on Runnable Object, create for loop in run() method and start  both threads. After starting each Thread call join() method on them to ensure they end in order in which they has started.
+
+Full Program to show usage of join() method>
+
+class MyRunnable implements Runnable{
+    public void run(){
+        System.out.println("in run() method");
+           for(int i=0;i<5;i++){
+                  System.out.println("i="+i+" ,ThreadName="+Thread.currentThread().getName());
+           }          
+    }
+}
+ 
+public class MyClass {
+    public static void main(String...args) throws InterruptedException{
+           System.out.println("In main() method");
+           MyRunnable runnable=new MyRunnable();
+           Thread thread1=new Thread(runnable);
+           Thread thread2=new Thread(runnable);
+
+           thread1.start();
+           thread1.join();
+
+           thread2.start();
+           thread2.join();
+
+           System.out.println("end main() method");
+    }
+}
+
+
+First, main thread was called, it started Thread1 and then we called join() method on Thread1, once Thread1 ended main thread started Thread2 and we called join() method on Thread2, once Thread2 ended main thread also ended.
+
+
+#--Difference between wait() and sleep() method -
+
+1. Should be called from synchronized block : wait() method is always called from synchronized block i.e. wait() method needs to lock object monitor before object on which it is called. But sleep() method can be called from outside synchronized block i.e. sleep() method doesn’t need any object monitor.
+
+
+2. IllegalMonitorStateException : if wait() method is called without acquiring object lock(i.e called outside a synchronized context) than IllegalMonitorStateException is thrown at runtime, but sleep() method never throws such exception.
+
+3.Belongs to which class : wait() method belongs to java.lang.Object class but sleep() method belongs to java.lang.Thread class.
+
+4. Called on object or thread : wait() method is called on objects but sleep() method is called on Threads not objects.
+
+5. Thread state : when wait() method is called on object, thread that holded object’s monitor goes from running to waiting state and can return to runnable state only when notify() or notifyAll() method is called on that object. And later thread scheduler schedules that thread to go from from runnable to running state. 
+when sleep() is called on thread it goes from running to waiting state and can return to runnable state when sleep time is up.
+
+6. When called from synchronized block : when wait() method is called thread leaves the object lock.  But sleep() method when called from synchronized block or method thread doesn’t leaves object lock.
+
+#--Differences yield() and sleep() :
+
+ Definition : yield() method when called on thread gives a hint to the thread scheduler that the current thread is willing to yield its current use of a processor. The thread scheduler is free to ignore this hint. sleep() methods causes current thread to sleep for specified number of milliseconds (i.e. time passed in sleep method as parameter). Ex- Thread.sleep(10) causes currently executing thread to sleep for 10 millisec.
+
+ Thread state : when sleep() is called on thread it goes from running to waiting state and can return to runnable state when sleep time is up. when yield() method is called on thread it goes from running to runnable state, not in waiting state. Thread is eligible to run but not running and could be picked by scheduler at anytime.
+
+ Exception : yield() method doesn’t throws any exception. But sleep() method throws compile time exception i.e. InterruptedException.
+
+ Waiting time : yield() method stops thread for unpredictable time, that depends on thread scheduler. But sleep() method have got few options.
+sleep(long millis) - Causes the currently executing thread to sleep for the specified number of milliseconds
+sleep(long millis, int nanos) - Causes the currently executing thread to sleep for the specified number of milliseconds plus the specified number of nanoseconds.
+
+
+#--Is synchronizing ArrayList using Collections.synchronizedList() is completely thread-safe in java?
+Answer is No.Because when we synchronize ArrayList using Collections.synchronizedList in java, Iterator on synchronizedArrayList won't be synchronized in java.
+
+So, How to synchronize arraylist in java to make it completely thread safe in java >
+There are 2 solutions 
+Solution 1 = iterator returned by synchronizedArrayList won't be synchronized, so during iteration we must keep synchronizedArrayList in synchronizedblock to avoid ConcurrentModificationException in java. 
+
+Solution 2 = Use CopyOnWriteArrayList, it is completely thread-safe, also Iterator & listIterator returned by CopyOnWriteArrayList are completely thread-safe in java
+
+
+#--By what size ArrayList is resized in java? How much size increases when ArrayList is resized in java?
+ArrayList is resized by 50% of it’s current size. 
+So, ArrayList will be resized from 10, to 15, to 22, to 33 and so on.
+
+
+#--But how ArrayList is resized in java?
+ArrayList’s add method internally calls ensureCapacityInternal method, which calls ensureExplicitCapacity method, which calls grow method, grow method >
+creates new array of higher capacity and 
+copies existing array to new one and 
+return the new array.
+
+#--Can we change default initial capacity of ArrayList in java?
+Yes, rather than using new ArrayList(), you can use other constructor specified in java.util.ArrayList 
+    public ArrayList(int initialCapacity) {
+        super();
+        if (initialCapacity < 0)
+         throw new IllegalArgumentException("Illegal Capacity: "+
+                                            initialCapacity);
+        this.elementData = new Object[initialCapacity];
+    }
+This constructor will throw IllegalArgumentException if initialCapacity passed is less than 0.
+
+
+
+#--What are ResultSet Types in JDBC java?
+Answer. Types of ResultSet in java >
+TYPE_FORWARD_ONLY: 
+In TYPE_FORWARD_ONLY cursor can only move forward on the result set, not backward.
+It is default ResultSet type in java.
+
+
+Note : TYPE_FORWARD_ONLY is the default ResultSet type in java. uuu
+
+
+TYPE_SCROLL_INSENSITIVE: 
+In TYPE_SCROLL_INSENSITIVE cursor can move (scroll) both forward and backward, 
+Cursor can be moved to absolute/specific/relative position as well. 
+TYPE_SCROLL_INSENSITIVE is not sensitive to the changes made to the data that underlies the ResultSet. (It means that if some thread modifies the data in the database which ResultSet currently holds won’t impact/change the already opened ResultSet’s data).
+
+
+TYPE_SCROLL_SENSITIVE: 
+In TYPE_SCROLL_SENSITIVE cursor can move (scroll) both forward and backward, 
+Cursor can be moved to absolute/specific/relative position as well. 
+TYPE_SCROLL_SENSITIVE is sensitive to the changes made to the data that underlies the ResultSet. (It means that if some thread modifies the data in the database which ResultSet currently holds will impact/change the already opened ResultSet’s data).
+
+Must know : getType() - method returns ResultSet object type. It may be TYPE_FORWARD_ONLY (1003), TYPE_SCROLL_INSENSITIVE  (1004) or TYPE_SCROLL_SENSITIVE (1005)
+
+
+#--JDBC interview Question 5. What is PreparedStatement in JDBC java?
+Answer. This is important interview question for freshers. These 12 points will describe PreparedStatement in detail.
+
+ PreparedStatement is used for executing a precompiled SQL statement.
+
+ PreparedStatement can be executed repeatedly, it can accept different parameters at runtime.
+
+
+PreparedStatement is faster as compared to java.sql.Statement because it is used for executing precompiled SQL statement
+
+
+Prepared statements are executed through a non sql binary protocol. 
+In binary protocol communications to the server is faster because less data packets are transferred.
+
+
+PreparedStatement is suitable for executing DML commands -  SELECT, INSERT, UPDATE and DELETE
+
+
+PreparedStatement can be used for  
+storing/retrieving image and 
+Storing /retrieving file in database 
+(i.e. by using BLOB, CLOB datatypes)
+
+
+PreparedStatement can be used for setting java.sql.Array using setArray method.
+While sending it to database the driver converts this java.sql.Array to an SQL ARRAY 
+PreparedStatement prevents SQL injection, because text for all the parameter values is escaped.
+Example >
+prepStmt = con.prepareStatement("select * from EMPLOYEE where ID=? ");
+prepStmt.setInt(1, 8); 
+
+
+#--JDBC interview Question 14. What are some important and most frequently used ResultSet methods in JDBC java?
+Answer. ResultSet methods - To navigate over ResultSet >
+first() - first method makes cursor to point to the first row in the ResultSet object.
+last() - last method makes cursor to point to the last row in the ResultSet object.
+
+
+next() - next method makes cursor to point to the next row in the ResultSet object.
+previous() - previous method makes cursor to point to the previous row in the ResultSet object.
+
+
+beforeFirst() - beforeFirst method makes cursor to point to the front of the ResultSet object, just before the first row.
+afterLast() - afterLast method makes cursor to point to the last/end of the ResultSet object, just after the last row.
+
+
+absolute(int row) - absolute method moves the cursor to the specified row number in this ResultSet object. 
+relative(int rows ) - relative method moves the cursor a relative number of rows, either positive or negative.
+
+
+ResultSet information methods >
+isFirst() - method returns true if cursor points to first row in ResultSet object.
+isBeforeFirst() - method returns true if cursor is before the first row in ResultSet object.
+isAfterLast() - method returns true if cursor is after the last row in ResultSet object.
+
+
+getRow() - method retrieves the current row number. The first row is number 1, the second number 2.
+
+
+getType() - method returns ResultSet object type. It may be TYPE_FORWARD_ONLY (1003), TYPE_SCROLL_INSENSITIVE  (1004) or TYPE_SCROLL_SENSITIVE (1005)
+getConcurrency() - method returns concurrency mode of this ResultSet object. It may be CONCUR_READ_ONLY (1007) or CONCUR_UPDATABLE  (1008)
+getHoldability() - method returns holdability of this ResultSet object. It may be HOLD_CURSORS_OVER_COMMIT (1) or CLOSE_CURSORS_AT_COMMIT (2)
+
+refreshRow() - method refreshes the current row with its most recent value available in the database. 
+
+#--JDBC interview Question 22. What is ResultSetMetaData in JDBC java?
+
+Answer. I have seen many experienced developers unable to answer this JDBC interview question. You must know this answer. java.sql.ResultSetMetaData is an interface in java. 
+java.sql.ResultSetMetaData object can be used to get information about the types and properties of the columns in a java.sql.ResultSet object.
+java.sql.ResultSetMetaData extends java.sql.Wrapper.
+ResultSetMetaData important methods -
+ getColumnCount = To find out total number of columns in table
+ getColumnName =  Display table's column type 
+ getColumnTypeName=  Display table's column type
+
+#--JDBC interview Question 23. What is DatabaseMetaData in JDBC java?
+Answer. Another important JDBC interview question for experienced java developers. java.sql.DatabaseMetaData is an interface. 
+java.sql.DatabaseMetaData can be used to obtain information about the database as a whole.
+java.sql.DatabaseMetaData extends java.sql.Wrapper.
+DatabaseMetaData important methods -
+getDriverName() - Returns driver name.
+getDriverVersion() - returns driver version.
+getDatabaseProductName() - returns database name
+getDatabaseProductVersion() - returns database version
+getUserName() - returns username used to connect to database.
+getURL() - returns URL used to connect to database.
+getDatabaseMinorVersion() - returns database’s minor/initial version.
+getDatabaseMajorVersion() - returns current database version.
+
+
+#--In web.xml file   <load-on-startup>1</load-on-startup> is defined between <servlet></servlet> tag what does it means. (detailed answer)
+Ans: whenever we request for any servlet the servlet container will initialize the servlet and load it which is defined in our config file called web.xml by default it will not initialize when our context is loaded .defining like this <load-on-startup>1</load-on-startup> is also known as pre-initialization of servlet means now the servlet for which we have defined this tag has been initialized in starting when context is loaded before getting any request.When this servlet question was asked to me in an interview few years back , I was not even aware of this element but this questions pointed me to look DTD of web.xml and understand other elements as well.
+
+
+#-- Difference between HTTP PUT and POST
+
+PUT  - is used when you want to update an existing resource.
+
+POST - Is used when you want to create a new resource.  
+
+#-- HTTP Methods
+
+GET - read only method, updates nothing at server, repeatable operation as it changes nothing on server.
+
+PUT POST, Delete - write methods, updates something at server.
+
+PUT, DELETE - considered as safe, multiple requests will not result in inconsistency. Only the first request for PUT and delete will have effect on server subsequent requests will not.
+
+POST - is not safe to call multiple times. Every post request changes something at server.
+
+GET, PUT and DELETE are IDEMPOTENT methods.
+
+POST is a NON-IDEMPOTENT method.
+
+
+
+#-- @Context annoation javaxx.ws.rs.core package
+
+With @Context annotation you can inject UriInfo, HttpHeaders etc in a resource method.
+
+
+
+#--What does @Provider in JAX-RS mean?
+
+Providers are a simply a way of extending and customizing the JAX-RS runtime. You can think of them as plugins that (potentially) alter the behavior of the runtime, in order to accomplish a set of (program defined) goals.
+
+Providers are not the same as resources classes, they exist, conceptually, at a level in-between resources classes and the JAX-RS implementation. If it helps, you can think of them in the same light as device drivers (existing between user and kernel space). This is a broad generalization.
+
+There are three classes of providers defined by the current JAX-RS specification. The commonality between them is that all providers must be identified by the 
+@Provider annotation and follow certain rules for constructor declaration. Apart from that, different provider types may have additional annotations, and will implement different interfaces.
+
+Entity Providers
+
+These providers control the mapping of data representations (like XML, JSON, CSV) to their Java object equivalents.
+
+Context Providers
+
+These providers control the context that resources can access via @Context annotations.
+
+Exception Providers
+
+These providers control the mapping of Java exceptions to a JAX-RS Response instance.
+
+
+#-- @ApplicationPath annotation in JAX-RS
+
+Identifies the application path that serves as the base URI for all resource URIs provided by Path. May only be applied to a subclass of Application.
+
+When published in a Servlet container, the value of the application path may be overridden using a servlet-mapping element in the web.xml.
+
+Usage : @ApplicationPath("webapi") or @ApplicationPath(value="webapi")
+
+@ApplicationPath("api")
+public class MyRestApp extends Application {
+}
+
+#-- Default Scope of JAX-RS resources is "Per-Request" or "Request scoped"
+
+It means whenever a new instance is created for a resource to serve a request that instance is destroyed once the the request is served.
+You can change the scope of a resource from Per-Request to Singleton with @Singleton(javax.inject) annotation. Jax-RS will retain the resources annotated with @Singleton across requests. @Singleton scoped resources are killed when the server is shutdown.
+
+
+#-- All the param annotation in Jax-RS like @QueryParam, @MatrixParam, @BeanParam, @CookieParam, @PathParam etc can be applied to instance member variables of the resource class as well. But, only if the resource class is request scoped and not Singleton scoped, 
+
+Because Singleton resource classes are instantiated during application startup. So, you cannot inject request specific information to their member variables.
+
+
+#--Difference between instanceof and isAssignableFrom() method of Class class.
+
+The instanceof operator ensures that the left operand is an instance of the right operand or a subclass of it. On the other hand Class.isAssignableFrom() method, as the name suggests, indicates whether an instance of the class, passed as parameter to this method, can be assigned to the reference variable of type indicated by the class on which this method is called. Thus the statement
+
+x instanceof Y
+
+checks if the object referred by x variable is an instance of Y or a subclass of Y. While the statement
+
+x.getClass().isAssignableFrom(Y.class)
+
+checks if an instance of Y class can be assigned to the reference variable of type indicated by the actual object referred by x variable.
+Don’t worry if you haven't understood it completely by the above definition as we are going to explore it more using an example.
+Consider a hierarchy of 3 classes A, B and C where C extends B and B extends A. Also consider a statement:
+B b = new C();
+
+Now the statement
+
+b instanceof A
+
+will return true as b (which is actually an instance of Class C) is an instance of subclass of A. similarly statements
+
+b instanceof B
+
+b instanceof C
+
+will also return true for the same reason. But note that if b would be an instance of Class B (i.e. the above expression would be B b = new B()), the last statement i.e. b instanceof C would have returned false as instance of B is neither C nor a subclass of C.
+Now consider the statement:
+
+b.getClass().isAssignableFrom(A.class)
+
+This actually means: can an instance of class A be assigned to reference type of C (note that b.getClass() is C class no B)? In syntactical way, this means: can we write C c = new A()? And we know this is not true. Thus the above statement will return false. Similarly for the statement b.getClass().isAssignableFrom(B.class) will also return false because C c = new B() is incorrect. But the statement
+
+b.getClass().isAssignableFrom(C.class)
+
+will return true as C c = new C() is a correct statement.
+
+#-- interface ParamConveter methods
+
+-- T	fromString(String value)
+   Parse the supplied value and create an instance of T.
+   
+-- String	toString(T value)
+   Convert the supplied value to a String.
+   
+#-- interface ParamConveterProvider methods
+
+-- <T> ParamConverter<T>	getConverter(Class<T> rawType, Type genericType, Annotation[] annotations)
+Obtain a ParamConverter that can provide from/to string conversion for an instance of a particular Java type.
+
+#--interface ParamConverter
+
+			public T fromString(String value) 		
+
+			public String toString(T value) 
+
+			
+
+#-- interface ExceptionMapper methods
+--Response	toResponse(E exception) 
+      Map an exception to a Response.
+
+#-- MessageBodyReader methods
+
+--boolean	isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
+   Ascertain if the MessageBodyReader can produce an instance of a particular type.
+
+
+--T	readFrom(Class<T> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String,String> httpHeaders, InputStream entityStream)
+  Read a type from the InputStream.
+
+#-- MessageBodyWriter methods
+
+-- long	getSize(T t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
+  Originally, the method has been called before writeTo to ascertain the length in bytes of the serialized form of t. Deprecated as of JAX-RS 2.0
+  
+-- boolean	isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType)
+  Ascertain if the MessageBodyWriter supports a particular type.
+  
+-- void	writeTo(T t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String,Object> httpHeaders, OutputStream         entityStream)
+   Write a type to an HTTP message.
+   
+   
+#-- ContainerRequestFilter interface methods 
+
+void	filter(ContainerRequestContext requestContext)
+Filter method called before a request has been dispatched to a resource.
+
+
+#-- ContainerResponseFilter interface methods 
+
+void	filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext)
+Filter method called after a response has been provided for a request (either by a request filter or by a matched resource method.
+
+   
+#-- @Priority annottion in JAX-RS
+
+If there are multiple request or response filters in a JAX-RS application, the sequence in which the filters are executed can be decided with the help of @Priority annotation the value given to value element of @Priority annotation decides the sequence of execution. for ex 
+
+@Priority(value=1)
+@Priority(value=2)
+
+#-- Bean scope in core-spring are:
+
+ 1. Singleton - common for every request 
+ 2. Prototype - new for every request
+
+#-- RequiredAnnotationBeanPostProcessor is the bean Post processor to make sure all the required bean dependencies are statified while initializing the application.
+it is used along with the @Required annotation placed at the required property of any bean.
+
+#-- @Autowired annotation in spring by default tries to autowire the beans byType. If there are multiple beans of same type who are candidate for autowiring the @Autowired annotation will fail, as a fallback strategy it tries to autowire any bean whose id is same as the name of the property to autowire.	
+
+#-- @Qualifier is another annotation that can be used  to autowire dependencies in case of ambiguities. for ex : 
+
+Placing @Qualifier on property which needs to be autowired
+
+@Qualifier("circleRelated")
+private Point center;
+
+<bean id="pointA" class"com.Point">
+<qualifier value="circleRelated">
+<property name="x" value= "Y"/>
+</beans>
+
+
+<bean id="pointB" class"com.Point"></beans>
+
+#-- @Resource annotation is a JSR annotation that is equivalent to @Autowired annotation and tries to autowire byName. Syntax
+
+@Resource(name="center") -> tries to autowire a bean with as "center"
+private Point pointA
+
+if name attribute is not specified then by default it tries to autowire byName of property
+
+#-- @PostConstruct, @PreDestroy are JSR annotations used to specify custom init and destroy method for the bean, also its usage is equivalent to having a init-method or destroy-method(Lifecycle callback methods) attribute of bean tag.
+ 
+for ex:  
+<bean id="pointA" class"com.Point" init-method="init" destroy-method="destroy">
+
+#-- PropertyPlaceHolderConfigurer is a spring class that is used if you want to resolved names of spring beans properties in spring-config.xml from .properties file. For ex : 
+		<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+				<property name="location">
+                <value>classpath:runtime/project.properties</value>
+            </property>
+        </bean>
+		
+#-- ResourceBundleMessageSource is a bean in spring framework that is used to display all the messages from a properties file
+
+#-- Autowired annotation is not supported on static fields: private static
+
+#-- Connection Pooling
+
+Establishing JDBC connections is resource-expensive, especially when the JDBC API is used in a middle-tier server environment, such as when DataDirect Connect for JDBC or DataDirect SequeLink for JDBC is running on a Java-enabled web server. In this type of environment, performance can be improved significantly when connection pooling is used. Connection pooling means that connections are reused rather than created each time a connection is requested. To facilitate connection reuse, a memory cache of database connections, called a connection pool, is maintained by a connection pooling module as a layer on top of any standard JDBC driver product.
+
+Connection pooling is performed in the background and does not affect how an application is coded; however, the application must use a DataSource object (an object implementing the DataSource interface) to obtain a connection instead of using the DriverManager class. A class implementing the DataSource interface may or may not provide connection pooling. A DataSource object registers with a JNDI naming service. Once a DataSource object is registered, the application retrieves it from the JNDI naming service in the standard way.
+
+
+#-- Protected access specifier
+When a field a or method is marked as protected in a class it can be accessed within same package everywhere, in other package only subclasses can access protected fields or methods within the sub class only.
+
+package p1;
+class A {
+	protected void m1(){}
+}
+
+class B{
+public static void main(String args[]) {
+	new B().m1(); // is valid
+}
+}
+
+package p2;
+class C extends A {
+	public static void main(String args[]) {
+	new C().m1(); // is valid
+}
+}
+class D {
+public static void main(String args[]) {
+	new C().m1(); // is not valid
+}
+}
+
+this is the reason clone() and finalize() methods in object class are made protected. As only subclasses can access those methods that too within the same class itself.
+
+#-- static methods cannot be overridden, if overridden it results in compilation error.
+
+#--Persistence Context in Hibernate and JPA
+
+Both the org.hibernate.Session API and javax.persistence.EntityManager API represent a context for dealing with persistent data. This concept is called a persistence context. Persistent data has a state in relation to both a persistence context and the underlying database.
+
+Entity states
+
+1. new, or transient - the entity has just been instantiated and is not associated with a persistence context. It has no persistent representation in the database and no identifier value has been assigned.
+
+2. managed, or persistent - the entity has an associated identifier and is associated with a persistence context.
+
+3. detached - the entity has an associated identifier, but is no longer associated with a persistence context (usually because the persistence context was closed or the instance was evicted from the context)
+
+4. removed - the entity has an associated identifier and is associated with a persistence context, however it is scheduled for removal from the database.
+
+In Hibernate native APIs, the persistence context is defined as the org.hibernate.Session. In JPA, the persistence context is defined by javax.persistence.EntityManager. Much of the org.hibernate.Session and javax.persistence.EntityManager methods deal with moving entities between these states.
+
+
+#-- A detached instance can be associated with a new Hibernate session when your application calls one of the load, refresh, merge, update(), or save() methods on the new session with a reference to the detached object.
+After the call, the detached object would be a persistent object managed by the new Hibernate session.
+
+#-- @GeneratedValue in Hibernate
+There are five different generation possibilities: identity, sequence, table, auto, and none. Identity generation relies on a natural table sequencing. This is requested in the @GeneratedValue annotation by using the
+
+GenerationType.IDENTITY option, as follows:
+
+@Id
+@GeneratedValue(strategy=GenerationType.IDENTITY)
+Long id;
+
+The sequence mechanism depends on the database’s ability to create table sequences (which tends to limit it to PostgreSQL, Oracle, and a few others). It corresponds to the GenerationType.SEQUENCE strategy.
+
+The table mechanism uses a table whose purpose is to store blocks of artificial identifiers; you can let Hibernate generate this for you, or you can specify all of the table’s specifics with an additional @TableGenerator annotation. To use artificial key generation via table, use the GenerationType.TABLE strategy.
+
+The fourth artificial key generation strategy is auto, which normally maps to the IDENTITY strategy, but depends on the database in question. (It’s supposed to default to something that’s efficient for the database in question.) To use this, use the GenerationType.AUTO strategy.
+
+The fifth strategy isn’t actually a strategy at all: it relies on manual assignment of an identifier. If Session.persist() is called with an empty identifier, you’ll have an IdentifierGenerationException thrown.
+
+#--The @PrimaryKeyJoinColumn annotation does say that the primary key of the entity is used as the foreign key value to the associated entity:
+@Entity
+public class Body {
+    @Id
+    public Long getId() { return id; }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    public Heart getHeart() {
+        return heart;
+    }
+    ...
+}            
+@Entity
+public class Heart {
+    @Id
+    public Long getId() { ...}
+}        
+
+#-- mappedBy attribute in Association
+
+The association may be bidirectional. In a bidirectional relationship, one of the sides (and only one) has to be the owner: the owner is responsible for the association column(s) update. To declare a side as not responsible for the relationship, the attribute mappedBy is used. mappedBy refers to the property name of the association on the owner side.
+For more reference : https://docs.jboss.org/hibernate/stable/annotations/reference/en/html_single/
+
+
+#--The save() methods all create a new org.hibernate.event.SaveOrUpdateEvent event.
+
+#--Ideally, what you would do is load the object from the session in the first place (as we’ve done in most of our other examples where we show updates); this means that the updates take place on a persistent object, and we don’t actually have to call Session.save() or Session.saveOrUpdate() at all.3  Once an object is in a persistent state, Hibernate manages updates to the database itself as you change the fields and properties of the object.
+
+#-- When we discuss persistent objects in Hibernate, we also need to consider the role that object equality and identity play with Hibernate. When we have a persistent object in Hibernate, that object represents both an instance of a class in a particular Java virtual machine (JVM) and a row (or rows) in a database table (or tables). Requesting a persistent object again from the same Hibernate session returns the same Java instance of a class, which means that you can compare the objects using the standard Java == equality syntax. If, however, you request a persistent object from more than one Hibernate session, Hibernate will provide distinct instances from each session, and the == operator will return false if you compare these object instances. Taking this into account, if you are comparing objects in two different sessions, you will need to implement the equals() method on your Java persistence objects, which you should probably do as a regular occurrence anyway. (Just don’t forget to implement hashCode() along with it.)
+Implementing equals() can be interesting. Hibernate wraps the actual object in a proxy (for various performance-enhancing reasons, like loading data on demand), so you need to factor in a class hierarchy for equivalency; it’s also typically more efficient to use mutators in your equals() and hashCode() methods, as opposed
+to the actual fields.
+
+
+#-- load methods in Hibernate
+public Object load(Class theClass, Serializable id) throws HibernateException
+public Object load(String entityName, Serializable id) throws HibernateException
+public void load(Object object, Serializable id) throws HibernateException
+public Object load(Class theClass, Serializable id, LockMode lockMode) throws HibernateException
+public Object load(String entityName, Serializable id, LockMode lockMode) throws HibernateException
+
+#-- Difference between get() and load()
+You should not use a load() method unless you are sure that the object exists. If you are not certain, then use one of the get() methods. The load() methods will throw an exception if the unique ID is not found in the database, whereas the get() methods will merely return a null reference.
+
+#-- get method in Hibernate
+public Object get(Class clazz, Serializable id) throws HibernateException
+public Object get(String entityName, Serializable id) throws HibernateException
+public Object get(Class clazz, Serializable id, LockMode lockMode) throws HibernateException
+public Object get(String entityName, Serializable id, LockMode lockMode) throws HibernateException
+
+#--Merging Entities
+Merging is performed when you desire to have a detached entity changed to persistent state again, with the detached entity’s changes migrated to (or overriding) the database. The method signatures for the merge operations are:
+
+Object merge(Object object)
+Object merge(String entityName, Object object)
+
+Merging is the inverse of refresh(), which overrides the detached entity’s values with the values from the database.
+
+#--Refreshing Entities
+Hibernate provides a mechanism to refresh persistent objects from their database representation. Use one of the refresh() methods on the Session interface to refresh an instance of a persistent object, as follows:
+
+public void refresh(Object object) throws HibernateException
+public void refresh(Object object, LockMode lockMode) throws HibernateException
+
+These methods will reload the properties of the object from the database, overwriting them; thus, as stated, refresh() is the inverse of merge(). Merging overrides the database with the values held by the previously transient object, and refresh() overrides the values in the transient object with the values in the database.
+
+#- flush() method for updating entities
+The flush() method forces Hibernate to flush the session, as follows:
+public void flush() throws HibernateException
+
+You can determine if the session is dirty with the isDirty() method, as follows:
+public boolean isDirty() throws HibernateException
+
+You can also instruct Hibernate to use a flushing mode for the session with the setFlushMode() method. The getFlushMode() method returns the flush mode for the current session, as follows:
+public void setFlushMode(FlushMode flushMode)
+public FlushMode getFlushMode()
+
+The possible flush modes are the following:
+• ALWAYS: Every query flushes the session before the query is executed. This is going to be very
+slow.
+• AUTO: Hibernate manages the query flushing to guarantee that the data returned by a query is
+up to date.
+• COMMIT: Hibernate flushes the session on transaction commits.
+• MANUAL: Your application needs to manage the session flushing with the flush() method.
+Hibernate never flushes the session itself.
+
+By default, Hibernate uses the auto flush mode. Generally, you should use transaction boundaries to ensure that
+appropriate flushing is taking place, rather than trying to “manually” flush at the appropriate times.
+
+
+
+#--Deleting Entities
+In order to allow convenient removal of entities from the database, the Session interface provides a delete() method, as follows:
+
+public void delete(Object object) throws HibernateException
+
+In the simplest form, in which you are simply deleting an object with no associations to other objects, this is straightforward; but many objects do have associations with other objects. To allow for this, Hibernate can be configured to allow deletes to cascade from one object to its associated objects.
+ 
+ 
+ #-- Data loaded with load() method in hibernate can only be viewed inside a persistence context. After the session is closed the loaded object would not be having ny data.
+ where as data loaded with get() method can be viewed even after session is closed.
+ 
+ 
+ #-- The cascade types supported by the Java Persistence
+Architecture are:
+• PERSIST
+• MERGE
+• REFRESH
+• REMOVE
+• DETACH
+• ALL
+
+
+#- @Basic annotation Hibernate
+
+This default behavior can be overridden by applying the @Basic annotation to the appropriate class member.The annotation takes two optional attributes, and is itself entirely optional. The first attribute is named optional and takes a boolean. Defaulting to true, this can be set to false to provide a hint to schema generation that the associated column should be created NOT NULL. The second is named fetch and takes a member of the enumeration FetchType. This is EAGER by default, but can be set to LAZY to permit loading on access of the value.
+
+#--Mostly used Attributes of @Column annotation
+• name = permits the name of the column to be explicitly specified—by default, this would be the name of the property. However, it is often necessary to override the default behavior when it would otherwise result in an SQL keyword being used as the column name (e.g., user).
+
+• length = permits the size of the column used to map a value (particularly a String value) to be explicitly defined. The column size defaults to 255, which might otherwise result in truncated String data, for example.
+
+• nullable = permits the column to be marked NOT NULL when the schema is generated. The default is that fields should be permitted to be null; however, it is common to override this when a field is, or ought to be, mandatory.
+
+• unique = permits the column to be marked as containing only unique values. This defaults to false, but commonly would be set for a value that might not be a primary key but would still cause problems if duplicated (such as username).
+
+#-- @Embedabble annotation
+An embeddable entity must be composed entirely of basic fields and attributes. An embeddable entity can only use the @Basic, @Column, @Lob, @Temporal, and @Enumerated annotations. It cannot maintain its own primary key with the @Id tag because its primary key is the primary key of the enclosing entity.
+
+#-- Create, Read, Update, and Delete hibernate methods
+
+-save() Saves an object to the database. This should not be called for an object that has already been saved to the database.
+
+-saveOrUpdate() Saves an object to the database, or updates the database if the object already exists. This method is slightly less efficient than the save() method since it may need to perform a SELECT statement to check whether the object already exists, but it will not fail if the object has already been saved.
+
+-merge() Merges the fields of a nonpersistent object into the appropriate persistent object (determined by ID). If no such object exists in the database, then one is created and saved.Persist Reassociates an object with the session so that changes made to the object will be persisted.
+
+-Get() Retrieves a specific object from the database by the object’s identifier.
+
+-getEntityName() Retrieves the entity name (this will usually be the same as the fully qualified class name of the POJO).
+
+-getIdentifier() Determines the identifier—the object(s) representing the primary key—for a specific object associated with the session.
+
+-load() Loads an object from the database by the object’s identifier (you should use the get() methods if you are not certain that the object is in the database).
+
+-refresh() Refreshes the state of an associated object from the database.
+
+-update() Updates the database with changes to an object.
+
+-delete() Deletes an object from the database.
+
+
+#-- What is the difference between session.save() and session.persist() method?
+
+No.	save()								persist()
+
+1)	returns the identifier (Serializable) of the instance.		return nothing because its return type is void.
+2)	Syntax: public Serializable save(Object o)			Syntax: public void persist(Object o)
+
+
+#--What is the difference between get and load method?
+
+The differences between get() and load() methods are given below.
+
+No.	get()									load()
+
+1)	Returns null if object is not found.					Throws ObjectNotFoundException if object is not found.
+2)	get() method always hit the database.					load() method doesn't hit the database.
+3)	It returns real object not proxy.					it returns proxy object.
+4)	It should be used if you are not sure about the existence of instance.	It should be used if you are sure that instance exists.
+
+
+#--What is the difference between first level cache and second level cache?
+
+No.	First Level Cache					Second Level Cache
+
+1)	First Level Cache is associated with Session.		Second Level Cache is associated with SessionFactory.
+2)	It is enabled by default.				It is not enabled by default.
+
+
+#-- System.exit(0) 
+
+The parameter of exit should qualify if the execution of the program went good or bad. It's a sort of heredity from older programming languages where it's useful to know if something went wrong and what went wrong.
+
+Exit code is
+
+0 when execution went fine;
+1, -1, whatever != 0 when some error occurred, you can use different values for different kind of errors.
+If I'm correct exit codes used to be just positive numbers (I mean in UNIX) and according to range:
+
+1-127 are user defined codes (so generated by calling exit(n))
+128-255 are codes generated by termination due to different unix signals like SIGSEGV or SIGTERM
+But I don't think you should care while coding on Java, it's just a bit of information. It's useful if you plan to make your programs interact with standard tools.
+
+Zero => Everything Okay
+
+Positive => Something I expected could potentially go wrong went wrong (bad command-line, can't find file, could not connect to server)
+
+Negative => Something I didn't expect at all went wrong (system error - unanticipated exception - externally forced termination e.g. kill -9)
+
+#-- Difference between SVN and Git
+
+In short, svn is a Centralized Revision Control System, and git is a Distributed Revision Control System (DVCS).
+
+When you "check in" or "commit" to svn, you're contacting a central repository, synchronizing (merging & resolving) with the centralized versions, creating a changelist, and then sending that changelist back to the centralized repository.  All users use and share the same repository, possibly with branching.  If 2 users want to share code, the only way they can do so is by checking into the repository and then each doing a sync.
+
+In git, when you check out a repository, you're getting a complete clone of the whole thing -- all revisions of all files, all the metadata, everything.  You make changes locally, check in (commit) to your local copy of the repository, and then "push" those changesets to another repository when you want to publish them or share them with other users.  You can also "pull" to synchronize with a remote repository.  Since every repository is equal (they're all complete copies) you can "push" changes anywhere -- this is how 2 or more users can collaborate on a new feature without impacting the centralized repository. These users just issue push/pull operations with each other when they want to share code.  Once they have a working functional improvement, they can then "push" all the relevant changesets back to the central or production repository. 
+
+
+
+#--There are three built-in build lifecycles: default, clean and site. The default lifecycle handles your project deployment, the clean lifecycle handles project cleaning, while the site lifecycle handles the creation of your project's site documentation.
+
+
+
+#-- Build phases in Maven
+Build Life Cycles, Phases and Goals
+The build process in Maven is split up into build life cycles, phases and goals. A build life cycle consists of a sequence of build phases, and each build phase consists of a sequence of goals. When you run Maven you pass a command to Maven. This command is the name of a build life cycle, phase or goal. If a life cycle is requested executed, all build phases in that life cycle are executed. If a build phase is requested executed, all build phases before it in the pre-defined sequence of build phases are executed too.
+
+#--Build Plugins
+Build plugins are used to insert extra goals into a build phase. If you need to perform a set of actions for your project which are not covered by the standard Maven build phases and goals, you can add a plugin to the POM file. Maven has some standard plugins you can use, and you can also implement your own in Java if you need to.
+
+#--A Build Lifecycle is Made Up of Phases
+
+Each of these build lifecycles is defined by a different list of build phases, wherein a build phase represents a stage in the lifecycle.
+
+For example, the default lifecycle comprises of the following phases (for a complete list of the lifecycle phases, refer to the Lifecycle Reference):
+
+validate - validate the project is correct and all necessary information is available
+
+compile - compile the source code of the 
+
+test - test the compiled source code using a suitable unit testing framework. These tests should not require the code be packaged or deployed
+
+package - take the compiled code and package it in its distributable format, such as a JAR.
+
+verify - run any checks on results of integration tests to ensure quality criteria are met
+
+install - install the package into the local repository, for use as a dependency in other projects locally
+
+deploy - done in the build environment, copies the final package to the remote repository for sharing with other developers and projects.
+
+These lifecycle phases (plus the other lifecycle phases not shown here) are executed sequentially to complete the default lifecycle. Given the lifecycle phases above, this means that when the default lifecycle is used, Maven will first validate the project, then will try to compile the sources, run those against the tests, package the binaries (e.g. jar), run integration tests against that package, verify the integration tests, install the verified package to the local repository, then deploy the installed package to a remote repository.
+
+#-- Usual Command Line Calls
+
+In a development environment, use the following call to build and install artifacts into the local repository.
+
+mvn install
+
+This command executes each default life cycle phase in order (validate, compile, package, etc.), before executing install. You only need to call the last build phase to be executed, in this case, install:
+
+
+#--Each build life cycle is divided into a sequence of build phases, and the build phases are again subdivided into goals. Thus, the total build process is a sequence of build life cycle(s), build phases and goals.
+
+You can execute either a whole build life cycle like clean or site, a build phase like install which is part of the default build life cycle, or a build goal like dependency:copy-dependencies. Note: You cannot execute the default life cycle directly. You have to specify a build phase or goal inside the default life cycle.
