@@ -928,3 +928,6 @@ This command executes each default life cycle phase in order (validate, compile,
 #--Each build life cycle is divided into a sequence of build phases, and the build phases are again subdivided into goals. Thus, the total build process is a sequence of build life cycle(s), build phases and goals.
 
 You can execute either a whole build life cycle like clean or site, a build phase like install which is part of the default build life cycle, or a build goal like dependency:copy-dependencies. Note: You cannot execute the default life cycle directly. You have to specify a build phase or goal inside the default life cycle.
+
+#--Maven Plugins
+Maven plugins enable you to add your own actions to the build process. You do so by creating a simple Java class that extends a special Maven class, and then create a POM for the project. The plugin should be located in its own project
