@@ -1,0 +1,60 @@
+Git Commands : 
+
+git init - crate a repository wherever u fire this cmd
+
+git status
+
+git add . - add all files to staging area
+
+git commit -m "commit message" - Committs to local repository
+
+git push -u origin master - Pushes the code to remote repository master branch.
+
+
+
+#-- To Restart Jenkins
+
+http://localhost:8080/safeRestart
+
+#-- JAX-RS good study resource
+
+http://www.logicbig.com/tutorials/java-ee-tutorial/jax-rs/path-annotion-resource-mapping/
+
+#-- URL Options with Jenkins
+URL Options
+http://[jenkins-server]/[command] : where [command] can be
+exit shutdown jenkins
+restart restart jenkins
+reload to reload the configuration
+
+
+
+#-- To start jenkins on your laptop
+
+navigate to directory -> C:\Program Files (x86)\Jenkins
+
+java -jar jenkins.war
+
+once this command finishes downloading metadat, hit http://localhost:8080/ and jenkins will start
+
+Now to shutdown jenkins on the command prompt which you used to start jenkins , hit ctrl+c and jenkins will shutdown
+
+
+
+#-- Runnable and Callable in Java
+
+Runnable : If you have a fire and forget task then use Runnable. Put your code inside a Runnable and when the run() method is called, you can perform your task. The calling thread really does not care when you perform your task.
+
+Callable : If you are trying to retrieve a value from a task, then use Callable. Now callable on its own will not do the job. You will need a Future that you wrap around your Callable and get your values on future.get (). Here the calling thread will be blocked till the Future comes back with results which in turn is waiting for Callable's call() method to execute
+
+Another significant difference between Runnable and Callable interface is the ability to throw checked exception. The Callable interface can throw checked exception because it's call method throws Exception.
+
+1) The Runnable interface is older than Callable, there from JDK 1.0, while Callable is added on Java 5.0.
+
+2) Runnable interface has run() method to define task while Callable interface uses call() method for task definition.
+
+3) run() method does not return any value, it's return type is void while call method returns value. The Callable interface is a generic parameterized interface and Type of value is provided when an instance of Callable implementation is created.
+
+4) Another difference on run and call method is that run method can not throw checked exception while call method can throw checked exception in Java.
+
+Read more: http://www.java67.com/2013/01/difference-between-callable-and-runnable-java.html#ixzz50XSPDyvf
