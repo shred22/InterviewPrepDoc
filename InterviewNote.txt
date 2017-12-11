@@ -31,7 +31,7 @@ Reason: ArrayList maintains index based system for its elements as it uses array
 
 Conclusion: LinkedList element deletion is faster compared to ArrayList.
 
-Reason: LinkedListís each element maintains two pointers (addresses) which points to the both neighbor elements in the list. Hence removal only requires change in the pointer location in the two neighbor nodes (elements) of the node which is going to be removed. While In ArrayList all the elements need to be shifted to fill out the space created by removed element.
+Reason: LinkedList‚Äôs each element maintains two pointers (addresses) which points to the both neighbor elements in the list. Hence removal only requires change in the pointer location in the two neighbor nodes (elements) of the node which is going to be removed. While In ArrayList all the elements need to be shifted to fill out the space created by removed element.
 
 3) Inserts Performance: LinkedList add method gives O(1) performance while ArrayList gives O(n) in worst case. Reason is same as explained for remove.
 
@@ -42,7 +42,7 @@ There are few similarities between these classes which are as follows:
 Both ArrayList and LinkedList are implementation of List interface.
 They both maintain the elements insertion order which means while displaying ArrayList and LinkedList elements the result set would be having the same order in which the elements got inserted into the List.
 Both these classes are non-synchronized and can be made synchronized explicitly by using Collections.synchronizedList method.
-The iterator and listIterator returned by these classes are fail-fast (if list is structurally modified at any time after the iterator is created, in any way except through the iteratorís own remove or add methods, the iterator will throw a ConcurrentModificationException).
+The iterator and listIterator returned by these classes are fail-fast (if list is structurally modified at any time after the iterator is created, in any way except through the iterator‚Äôs own remove or add methods, the iterator will throw a ConcurrentModificationException).
 When to use LinkedList and when to use ArrayList?
 
 1) As explained above the insert and remove operations give good performance (O(1)) in LinkedList compared to ArrayList(O(n)). Hence if there is a requirement of frequent addition and deletion in application then LinkedList is a best choice.
@@ -72,7 +72,7 @@ As name suggest fail-fast Iterators fail as soon as they realized that structure
 
 Fail-safe Iterator in java
 
-Contrary to fail-fast Iterator, fail-safe iterator doesn't throw any Exception if Collection is modified structurally while one thread is Iterating over it because they work on clone of Collection instead of original collection and thatís why they are called as fail-safe iterator. Iterator of CopyOnWriteArrayList is an example of fail-safe Iterator, also iterator written by ConcurrentHashMap keySet is also fail-safe iterator and never throw ConcurrentModificationException in Java.
+Contrary to fail-fast Iterator, fail-safe iterator doesn't throw any Exception if Collection is modified structurally while one thread is Iterating over it because they work on clone of Collection instead of original collection and that‚Äôs why they are called as fail-safe iterator. Iterator of CopyOnWriteArrayList is an example of fail-safe Iterator, also iterator written by ConcurrentHashMap keySet is also fail-safe iterator and never throw ConcurrentModificationException in Java.
 
 #--Why Java doesn't support multiple inheritance
 1. First reason is ambiguity around Diamond problem, consider a class A has foo() method and then B and C derived from A and has there own foo() implementation and now class D derive from B and C using multiple inheritance and if we refer just foo() compiler will not be able to decide which foo() it should invoke.
@@ -213,7 +213,7 @@ First, main thread was called, it started Thread1 and then we called join() meth
 
 #--Difference between wait() and sleep() method -
 
-1. Should be called from synchronized block : wait() method is always called from synchronized block i.e. wait() method needs to lock object monitor before object on which it is called. But sleep() method can be called from outside synchronized block i.e. sleep() method doesnít need any object monitor.
+1. Should be called from synchronized block : wait() method is always called from synchronized block i.e. wait() method needs to lock object monitor before object on which it is called. But sleep() method can be called from outside synchronized block i.e. sleep() method doesn‚Äôt need any object monitor.
 
 
 2. IllegalMonitorStateException : if wait() method is called without acquiring object lock(i.e called outside a synchronized context) than IllegalMonitorStateException is thrown at runtime, but sleep() method never throws such exception.
@@ -222,10 +222,10 @@ First, main thread was called, it started Thread1 and then we called join() meth
 
 4. Called on object or thread : wait() method is called on objects but sleep() method is called on Threads not objects.
 
-5. Thread state : when wait() method is called on object, thread that holded objectís monitor goes from running to waiting state and can return to runnable state only when notify() or notifyAll() method is called on that object. And later thread scheduler schedules that thread to go from from runnable to running state. 
+5. Thread state : when wait() method is called on object, thread that holded object‚Äôs monitor goes from running to waiting state and can return to runnable state only when notify() or notifyAll() method is called on that object. And later thread scheduler schedules that thread to go from from runnable to running state. 
 when sleep() is called on thread it goes from running to waiting state and can return to runnable state when sleep time is up.
 
-6. When called from synchronized block : when wait() method is called thread leaves the object lock.  But sleep() method when called from synchronized block or method thread doesnít leaves object lock.
+6. When called from synchronized block : when wait() method is called thread leaves the object lock.  But sleep() method when called from synchronized block or method thread doesn‚Äôt leaves object lock.
 
 #--Differences yield() and sleep() :
 
@@ -233,7 +233,7 @@ when sleep() is called on thread it goes from running to waiting state and can r
 
  Thread state : when sleep() is called on thread it goes from running to waiting state and can return to runnable state when sleep time is up. when yield() method is called on thread it goes from running to runnable state, not in waiting state. Thread is eligible to run but not running and could be picked by scheduler at anytime.
 
- Exception : yield() method doesnít throws any exception. But sleep() method throws compile time exception i.e. InterruptedException.
+ Exception : yield() method doesn‚Äôt throws any exception. But sleep() method throws compile time exception i.e. InterruptedException.
 
  Waiting time : yield() method stops thread for unpredictable time, that depends on thread scheduler. But sleep() method have got few options.
 sleep(long millis) - Causes the currently executing thread to sleep for the specified number of milliseconds
@@ -269,12 +269,12 @@ Another significant difference between Runnable and Callable interface is the ab
 
 
 #--By what size ArrayList is resized in java? How much size increases when ArrayList is resized in java?
-ArrayList is resized by 50% of itís current size. 
+ArrayList is resized by 50% of it‚Äôs current size. 
 So, ArrayList will be resized from 10, to 15, to 22, to 33 and so on.
 
 
 #--But how ArrayList is resized in java?
-ArrayListís add method internally calls ensureCapacityInternal method, which calls ensureExplicitCapacity method, which calls grow method, grow method >
+ArrayList‚Äôs add method internally calls ensureCapacityInternal method, which calls ensureExplicitCapacity method, which calls grow method, grow method >
 creates new array of higher capacity and 
 copies existing array to new one and 
 return the new array.
@@ -305,13 +305,13 @@ Note : TYPE_FORWARD_ONLY is the default ResultSet type in java. uuu
 TYPE_SCROLL_INSENSITIVE: 
 In TYPE_SCROLL_INSENSITIVE cursor can move (scroll) both forward and backward, 
 Cursor can be moved to absolute/specific/relative position as well. 
-TYPE_SCROLL_INSENSITIVE is not sensitive to the changes made to the data that underlies the ResultSet. (It means that if some thread modifies the data in the database which ResultSet currently holds wonít impact/change the already opened ResultSetís data).
+TYPE_SCROLL_INSENSITIVE is not sensitive to the changes made to the data that underlies the ResultSet. (It means that if some thread modifies the data in the database which ResultSet currently holds won‚Äôt impact/change the already opened ResultSet‚Äôs data).
 
 
 TYPE_SCROLL_SENSITIVE: 
 In TYPE_SCROLL_SENSITIVE cursor can move (scroll) both forward and backward, 
 Cursor can be moved to absolute/specific/relative position as well. 
-TYPE_SCROLL_SENSITIVE is sensitive to the changes made to the data that underlies the ResultSet. (It means that if some thread modifies the data in the database which ResultSet currently holds will impact/change the already opened ResultSetís data).
+TYPE_SCROLL_SENSITIVE is sensitive to the changes made to the data that underlies the ResultSet. (It means that if some thread modifies the data in the database which ResultSet currently holds will impact/change the already opened ResultSet‚Äôs data).
 
 Must know : getType() - method returns ResultSet object type. It may be TYPE_FORWARD_ONLY (1003), TYPE_SCROLL_INSENSITIVE  (1004) or TYPE_SCROLL_SENSITIVE (1005)
 
@@ -402,7 +402,7 @@ getDatabaseProductName() - returns database name
 getDatabaseProductVersion() - returns database version
 getUserName() - returns username used to connect to database.
 getURL() - returns URL used to connect to database.
-getDatabaseMinorVersion() - returns databaseís minor/initial version.
+getDatabaseMinorVersion() - returns database‚Äôs minor/initial version.
 getDatabaseMajorVersion() - returns current database version.
 
 
@@ -494,7 +494,7 @@ checks if the object referred by x variable is an instance of Y or a subclass of
 x.getClass().isAssignableFrom(Y.class)
 
 checks if an instance of Y class can be assigned to the reference variable of type indicated by the actual object referred by x variable.
-Donít worry if you haven't understood it completely by the above definition as we are going to explore it more using an example.
+Don‚Äôt worry if you haven't understood it completely by the above definition as we are going to explore it more using an example.
 Consider a hierarchy of 3 classes A, B and C where C extends B and B extends A. Also consider a statement:
 B b = new C();
 
@@ -595,6 +595,7 @@ it is used along with the @Required annotation placed at the required property o
 #-- @Autowired annotation in spring by default tries to autowire the beans byType. If there are multiple beans of same type who are candidate for autowiring the @Autowired annotation will fail, as a fallback strategy it tries to autowire any bean whose id is same as the name of the property to autowire.	
 
 #-- @Qualifier is another annotation that can be used  to autowire dependencies in case of ambiguities. for ex : 
+@Qualifier annotation is used to make @Autowired work by bean name, when more than one bean of the same type exist.
 
 Placing @Qualifier on property which needs to be autowired
 
@@ -630,9 +631,54 @@ for ex:
 		
 #-- ResourceBundleMessageSource is a bean in spring framework that is used to display all the messages from a properties file
 
-#-- Autowired annotation is not supported on static fields: private static
+#--@Autowired annotation is not supported on static fields: private static
+
+#--@Autowired cannot be used for primitive values
 
 #-- Connection Pooling
+
+#--Difference between constructor and setter injection
+
+There are many key differences between constructor injection and setter injection.
+
+Partial dependency: can be injected using setter injection but it is not possible by constructor. Suppose there are 3 properties in a class, having 3 arg constructor and setters methods. In such case, if you want to pass information for only one property, it is possible by setter method only.
+
+Overriding: Setter injection overrides the constructor injection. If we use both constructor and setter injection, IOC container will use the setter injection.
+
+Changes: We can easily change the value by setter injection. It doesn't create a new bean instance always like constructor. So setter injection is flexible than constructor injection.
+
+#-- Component Scanning in Spring
+
+In Auto Scanning, Spring Framework automatically scans, detects and instantiates the beans from the specified base package, if there is no declaration for the beans in the XML file.
+
+Auto Scanning can be switched on by using <context:component-scan>.
+
+<context:component-scan> can also do whatever <context:annotation-config> does in addition to auto scanning.
+
+Automatic discovery of beans can be achieved by doing the following:
+
+Use @Component annotation at POJO class level. Include following statement in the configuration file 
+
+Example: <context:component-scan base-package=‚Äúcom.mypack‚Äù/>
+
+In the above example, Spring container scans specified ‚Äúcom.mypack‚Äù package and all its sub-packages to detect @Component annotated classes and create beans of these classes with default bean name same as the class name after making its first letter lowercase. Best practice is to provide the specific package to scan as value for base-package attribute of component-scan tag in order to avoid unnecessary scanning.
+
+<context:component-scan /> tag looks for classes with the following annotations and creates beans for such classes automatically.
+
+@Component: This annotation is used to specify the class(POJO class) as a Spring component.
+@Controller: This annotation is used to specify Controller class(POJO class in Spring MVC) in the presentation layer.
+@Repository: This annotation is used to specify a Repository class(POJO class in Spring DATA) in the persistence layer.
+@Service: This annotation is used to specify Service class(POJO class) in the business layer.
+ 
+ #-- @Value annotation in spring is used to provide initializing values to properties in beans for ex:
+ 
+ @Component
+ class Employee {
+ 	@Value("john")
+	private String name; // name will be initialized with john
+}
+
+#-- JDBC Connections and Connection Pooling
 
 Establishing JDBC connections is resource-expensive, especially when the JDBC API is used in a middle-tier server environment, such as when DataDirect Connect for JDBC or DataDirect SequeLink for JDBC is running on a Java-enabled web server. In this type of environment, performance can be improved significantly when connection pooling is used. Connection pooling means that connections are reused rather than created each time a connection is requested. To facilitate connection reuse, a memory cache of database connections, called a connection pool, is maintained by a connection pooling module as a layer on top of any standard JDBC driver product.
 
@@ -698,13 +744,13 @@ GenerationType.IDENTITY option, as follows:
 @GeneratedValue(strategy=GenerationType.IDENTITY)
 Long id;
 
-The sequence mechanism depends on the databaseís ability to create table sequences (which tends to limit it to PostgreSQL, Oracle, and a few others). It corresponds to the GenerationType.SEQUENCE strategy.
+The sequence mechanism depends on the database‚Äôs ability to create table sequences (which tends to limit it to PostgreSQL, Oracle, and a few others). It corresponds to the GenerationType.SEQUENCE strategy.
 
-The table mechanism uses a table whose purpose is to store blocks of artificial identifiers; you can let Hibernate generate this for you, or you can specify all of the tableís specifics with an additional @TableGenerator annotation. To use artificial key generation via table, use the GenerationType.TABLE strategy.
+The table mechanism uses a table whose purpose is to store blocks of artificial identifiers; you can let Hibernate generate this for you, or you can specify all of the table‚Äôs specifics with an additional @TableGenerator annotation. To use artificial key generation via table, use the GenerationType.TABLE strategy.
 
-The fourth artificial key generation strategy is auto, which normally maps to the IDENTITY strategy, but depends on the database in question. (Itís supposed to default to something thatís efficient for the database in question.) To use this, use the GenerationType.AUTO strategy.
+The fourth artificial key generation strategy is auto, which normally maps to the IDENTITY strategy, but depends on the database in question. (It‚Äôs supposed to default to something that‚Äôs efficient for the database in question.) To use this, use the GenerationType.AUTO strategy.
 
-The fifth strategy isnít actually a strategy at all: it relies on manual assignment of an identifier. If Session.persist() is called with an empty identifier, youíll have an IdentifierGenerationException thrown.
+The fifth strategy isn‚Äôt actually a strategy at all: it relies on manual assignment of an identifier. If Session.persist() is called with an empty identifier, you‚Äôll have an IdentifierGenerationException thrown.
 
 #--The @PrimaryKeyJoinColumn annotation does say that the primary key of the entity is used as the foreign key value to the associated entity:
 @Entity
@@ -733,10 +779,10 @@ For more reference : https://docs.jboss.org/hibernate/stable/annotations/referen
 
 #--The save() methods all create a new org.hibernate.event.SaveOrUpdateEvent event.
 
-#--Ideally, what you would do is load the object from the session in the first place (as weíve done in most of our other examples where we show updates); this means that the updates take place on a persistent object, and we donít actually have to call Session.save() or Session.saveOrUpdate() at all.3  Once an object is in a persistent state, Hibernate manages updates to the database itself as you change the fields and properties of the object.
+#--Ideally, what you would do is load the object from the session in the first place (as we‚Äôve done in most of our other examples where we show updates); this means that the updates take place on a persistent object, and we don‚Äôt actually have to call Session.save() or Session.saveOrUpdate() at all.3  Once an object is in a persistent state, Hibernate manages updates to the database itself as you change the fields and properties of the object.
 
-#-- When we discuss persistent objects in Hibernate, we also need to consider the role that object equality and identity play with Hibernate. When we have a persistent object in Hibernate, that object represents both an instance of a class in a particular Java virtual machine (JVM) and a row (or rows) in a database table (or tables). Requesting a persistent object again from the same Hibernate session returns the same Java instance of a class, which means that you can compare the objects using the standard Java == equality syntax. If, however, you request a persistent object from more than one Hibernate session, Hibernate will provide distinct instances from each session, and the == operator will return false if you compare these object instances. Taking this into account, if you are comparing objects in two different sessions, you will need to implement the equals() method on your Java persistence objects, which you should probably do as a regular occurrence anyway. (Just donít forget to implement hashCode() along with it.)
-Implementing equals() can be interesting. Hibernate wraps the actual object in a proxy (for various performance-enhancing reasons, like loading data on demand), so you need to factor in a class hierarchy for equivalency; itís also typically more efficient to use mutators in your equals() and hashCode() methods, as opposed
+#-- When we discuss persistent objects in Hibernate, we also need to consider the role that object equality and identity play with Hibernate. When we have a persistent object in Hibernate, that object represents both an instance of a class in a particular Java virtual machine (JVM) and a row (or rows) in a database table (or tables). Requesting a persistent object again from the same Hibernate session returns the same Java instance of a class, which means that you can compare the objects using the standard Java == equality syntax. If, however, you request a persistent object from more than one Hibernate session, Hibernate will provide distinct instances from each session, and the == operator will return false if you compare these object instances. Taking this into account, if you are comparing objects in two different sessions, you will need to implement the equals() method on your Java persistence objects, which you should probably do as a regular occurrence anyway. (Just don‚Äôt forget to implement hashCode() along with it.)
+Implementing equals() can be interesting. Hibernate wraps the actual object in a proxy (for various performance-enhancing reasons, like loading data on demand), so you need to factor in a class hierarchy for equivalency; it‚Äôs also typically more efficient to use mutators in your equals() and hashCode() methods, as opposed
 to the actual fields.
 
 
@@ -757,12 +803,12 @@ public Object get(Class clazz, Serializable id, LockMode lockMode) throws Hibern
 public Object get(String entityName, Serializable id, LockMode lockMode) throws HibernateException
 
 #--Merging Entities
-Merging is performed when you desire to have a detached entity changed to persistent state again, with the detached entityís changes migrated to (or overriding) the database. The method signatures for the merge operations are:
+Merging is performed when you desire to have a detached entity changed to persistent state again, with the detached entity‚Äôs changes migrated to (or overriding) the database. The method signatures for the merge operations are:
 
 Object merge(Object object)
 Object merge(String entityName, Object object)
 
-Merging is the inverse of refresh(), which overrides the detached entityís values with the values from the database.
+Merging is the inverse of refresh(), which overrides the detached entity‚Äôs values with the values from the database.
 
 #--Refreshing Entities
 Hibernate provides a mechanism to refresh persistent objects from their database representation. Use one of the refresh() methods on the Session interface to refresh an instance of a persistent object, as follows:
@@ -784,16 +830,16 @@ public void setFlushMode(FlushMode flushMode)
 public FlushMode getFlushMode()
 
 The possible flush modes are the following:
-ï ALWAYS: Every query flushes the session before the query is executed. This is going to be very
+‚Ä¢ ALWAYS: Every query flushes the session before the query is executed. This is going to be very
 slow.
-ï AUTO: Hibernate manages the query flushing to guarantee that the data returned by a query is
+‚Ä¢ AUTO: Hibernate manages the query flushing to guarantee that the data returned by a query is
 up to date.
-ï COMMIT: Hibernate flushes the session on transaction commits.
-ï MANUAL: Your application needs to manage the session flushing with the flush() method.
+‚Ä¢ COMMIT: Hibernate flushes the session on transaction commits.
+‚Ä¢ MANUAL: Your application needs to manage the session flushing with the flush() method.
 Hibernate never flushes the session itself.
 
 By default, Hibernate uses the auto flush mode. Generally, you should use transaction boundaries to ensure that
-appropriate flushing is taking place, rather than trying to ìmanuallyî flush at the appropriate times.
+appropriate flushing is taking place, rather than trying to ‚Äúmanually‚Äù flush at the appropriate times.
 
 
 
@@ -811,12 +857,12 @@ In the simplest form, in which you are simply deleting an object with no associa
  
  #-- The cascade types supported by the Java Persistence
 Architecture are:
-ï PERSIST
-ï MERGE
-ï REFRESH
-ï REMOVE
-ï DETACH
-ï ALL
+‚Ä¢ PERSIST
+‚Ä¢ MERGE
+‚Ä¢ REFRESH
+‚Ä¢ REMOVE
+‚Ä¢ DETACH
+‚Ä¢ ALL
 
 
 #- @Basic annotation Hibernate
@@ -824,13 +870,13 @@ Architecture are:
 This default behavior can be overridden by applying the @Basic annotation to the appropriate class member.The annotation takes two optional attributes, and is itself entirely optional. The first attribute is named optional and takes a boolean. Defaulting to true, this can be set to false to provide a hint to schema generation that the associated column should be created NOT NULL. The second is named fetch and takes a member of the enumeration FetchType. This is EAGER by default, but can be set to LAZY to permit loading on access of the value.
 
 #--Mostly used Attributes of @Column annotation
-ï name = permits the name of the column to be explicitly specifiedóby default, this would be the name of the property. However, it is often necessary to override the default behavior when it would otherwise result in an SQL keyword being used as the column name (e.g., user).
+‚Ä¢ name = permits the name of the column to be explicitly specified‚Äîby default, this would be the name of the property. However, it is often necessary to override the default behavior when it would otherwise result in an SQL keyword being used as the column name (e.g., user).
 
-ï length = permits the size of the column used to map a value (particularly a String value) to be explicitly defined. The column size defaults to 255, which might otherwise result in truncated String data, for example.
+‚Ä¢ length = permits the size of the column used to map a value (particularly a String value) to be explicitly defined. The column size defaults to 255, which might otherwise result in truncated String data, for example.
 
-ï nullable = permits the column to be marked NOT NULL when the schema is generated. The default is that fields should be permitted to be null; however, it is common to override this when a field is, or ought to be, mandatory.
+‚Ä¢ nullable = permits the column to be marked NOT NULL when the schema is generated. The default is that fields should be permitted to be null; however, it is common to override this when a field is, or ought to be, mandatory.
 
-ï unique = permits the column to be marked as containing only unique values. This defaults to false, but commonly would be set for a value that might not be a primary key but would still cause problems if duplicated (such as username).
+‚Ä¢ unique = permits the column to be marked as containing only unique values. This defaults to false, but commonly would be set for a value that might not be a primary key but would still cause problems if duplicated (such as username).
 
 #-- @Embedabble annotation
 An embeddable entity must be composed entirely of basic fields and attributes. An embeddable entity can only use the @Basic, @Column, @Lob, @Temporal, and @Enumerated annotations. It cannot maintain its own primary key with the @Id tag because its primary key is the primary key of the enclosing entity.
@@ -843,13 +889,13 @@ An embeddable entity must be composed entirely of basic fields and attributes. A
 
 -merge() Merges the fields of a nonpersistent object into the appropriate persistent object (determined by ID). If no such object exists in the database, then one is created and saved.Persist Reassociates an object with the session so that changes made to the object will be persisted.
 
--Get() Retrieves a specific object from the database by the objectís identifier.
+-Get() Retrieves a specific object from the database by the object‚Äôs identifier.
 
 -getEntityName() Retrieves the entity name (this will usually be the same as the fully qualified class name of the POJO).
 
--getIdentifier() Determines the identifieróthe object(s) representing the primary keyófor a specific object associated with the session.
+-getIdentifier() Determines the identifier‚Äîthe object(s) representing the primary key‚Äîfor a specific object associated with the session.
 
--load() Loads an object from the database by the objectís identifier (you should use the get() methods if you are not certain that the object is in the database).
+-load() Loads an object from the database by the object‚Äôs identifier (you should use the get() methods if you are not certain that the object is in the database).
 
 -refresh() Refreshes the state of an associated object from the database.
 
