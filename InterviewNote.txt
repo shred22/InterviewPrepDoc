@@ -924,6 +924,25 @@ No.	get()									load()
 4)	It should be used if you are not sure about the existence of instance.	It should be used if you are sure that instance exists.
 
 
+#-- create-drop, create, update properties in Hibernate
+SessionFactory factory = new Configuration().configure()
+            .buildSessionFactory();
+    Session session = factory.openSession();
+    session.beginTransaction();
+    //do some task
+    session.getTransaction().commit();
+    session.close();  // closing session
+    factory.close();  // closing sessionFactory
+	
+Using auto generated proprty
+
+<property name="hibernate.hbm2ddl.auto">create-drop</property>
+
+as you can see I am closing my session factory it drops all my tables after this code completed as I see on console.That's the intention of the property create-drop.
+
+Use create or update to keep your tables.
+
+
 #--What is the difference between first level cache and second level cache?
 
 No.	First Level Cache					Second Level Cache
@@ -1033,3 +1052,58 @@ Although rarely, but sometimes you will have 3rd party JARs that you need to put
 
 mvn install:install-file -Dfile=<path-to-file> -DgroupId=<group-id> \
     -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=<packaging>
+	
+	
+#-- Double Check Locking in Singleton design pattern or double null check in Singleton class
+
+public class DoubleCheckLocking {
+
+    public static class SearchBox {
+        private static volatile SearchBox searchBox;
+
+        // private attribute of this class
+        private String searchWord = "";
+        private String[] list = new String[]{"Stack", "Overflow"};
+
+        // private constructor
+        private SearchBox() {}
+
+        // static method to get instance
+        public static SearchBox getInstance() {
+           
+		   if (searchBox == null) {               // first time lock
+                synchronized (SearchBox.class) {
+                    if (searchBox == null) {       // second time lock
+                        searchBox = new SearchBox();
+                    }
+                }
+            }
+            return searchBox;
+        }
+}
+You are obtaining lock on the SearchBox.class, only one thread will enter the synchronized block at a time. So the first thread enters then finds searchBox and creates it and then leaves the synchronized block, then the second thread enter the block then it finds that the searchBox is not null because the first thread already created it so it will not create a new instance of searchBox
+
+The Double checked pattern is used to avoid obtaining the lock everytime the code is executed, if the call are not happening together then the first condition will fail and the code execution will not execute the locking thus saving resources.
+
+#-- Custom Serialization in Java
+
+To customize serialization and deserialization, define readObject() and writeObject() methods in this class.
+
+- Inside writeObject() method, write class attributes using writeXXX methods provided by ObjectOutputStream.
+- Inside readObject() method, read class attributes using readXXX methods provided by ObjectInputStream.
+- Please note that the sequence of class attributes in read and write methods MUST BE same.
+
+If a class contains Non-Serializable attributes and the objects of that class needs to be Serialized, then we cannot rely on default Serialization, instead we should use custom serialization and implment our own writeObject and readObject methods.
+
+#-- Circular dependency in Beans in Spring
+
+	<bean id="b1" class="springPrac.SpringCorePractise.Bean1">
+		<property name="bean2" ref="b2"></property>
+		<property name="bean1Message" value="I am bean1"></property>
+	</bean>
+	<bean id="b2" class="springPrac.SpringCorePractise.Bean2">
+		<property name="bean1" ref="b1"></property>
+		<property name="bean2Message" value="I am bean2"></property>
+	</bean>
+	
+In such case firstly, the instances of both the beans will be created independently. After that bean1 is wired in bean2 through setter injection, than Bean2 is wired in Bean1 through setter
