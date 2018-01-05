@@ -1107,3 +1107,69 @@ If a class contains Non-Serializable attributes and the objects of that class ne
 	</bean>
 	
 In such case firstly, the instances of both the beans will be created independently. After that bean1 is wired in bean2 through setter injection, than Bean2 is wired in Bean1 through setter
+
+#-- Hibernate Criteria API
+In Hibernate, the Criteria API helps us build criteria query objects dynamically. Criteria is a another technique of data retrieval apart from HQL and native SQL queries. The primary advantage of the Criteria API is that it is intuitively designed to manipulate data without using any hard-coded SQL statements. Programmatic behavior offers compile-time syntax checking; as a result, most error messages are delivered during compilation. Although it's convenient, this does not provide any performance enhancing ability over HQL or native SQL queries
+
+-- Simplest Criteria
+We can use the following code to create a criteria object. This criteria will return the list of suppliers available in the database.
+
+Criteria criteria=session.createCriteria(Supplier.class);
+List<Supplier> suppliers=criteria.list();
+
+
+-- Criteria with Restrictions
+To winnow down the result of our queries, we can add some restriction by using the static methods provided by the org.hibernate.criterion.Restrictions class. We can set one or more constraints to narrow down the result to a Criteria object with the add method. For example, we can use the eq and/or like method to retrieve objects that have a property value that equals our restriction.
+
+Criteria c2 = session.createCriteria(Product.class);
+c2.add(Restrictions.like("name", "INC"));
+c2.add(Restrictions.like("description","%Transport%"));
+
+Criteria c2 = session.createCriteria(Product.class);
+c2.add(Restrictions.gt("price", new Double(8000.0));
+
+-- Result Set Paging
+
+A result set returned by the database query can be set for pagination. Pagination sets the limit of our view in the list of the result. We further can navigate forward and back through the results. This is particularly useful for performance reasons, especially when a query returns a large list of data.
+
+Criteria c2 = session.createCriteria(Product.class);
+c2.setFirstResult(10);
+c2.setMaxResults(50)
+
+
+-- Sorting Query Results
+We often need to sort the list of data returned by the result set. We do it as follows:
+
+Criteria c2 = session.createCriteria(Supplier.class);
+c2.addOrder(Order.desc("name"));
+
+-- Obtaining a Unique Result
+To obtain a unique result from the result set, use this code:
+
+Criteria c2 = session.createCriteria(Product.class);
+c2.add(Restrictions.le("price",new Double(8000.0)));
+c2.setMaxResults(1);
+Product product=(Product)c2.uniqueResult();
+
+-- Projections and Aggregates
+
+Hibernate supports properties, aggregate functions, and the GROUP BY clause. The Projection class is much like Restriction. It also provide several static factory methods to obtain projection instances. The following example shows some of the aggregate functions along with projection.
+
+Criteria c2 = session.createCriteria(Product.class);
+ProjectionList projectionList=Projection.projectionList();
+projectionList.add(Projections.min("price"));
+projectionList.add(Projections.max("price"));
+projectionList.add(Projections.avg("price"));
+projectionList.add(Projections.countDistinct("name"));
+c2.setProjection(projectionList);
+
+#-- Dirty-Read in Hibernate
+First level cache is not shared across transactions. Except in case of Extended persistence contexts the most common pattern used is that each transaction is associated with a single session/persistence-context and has its own first level cache which is being tracked only for that transaction.
+
+Actually "dirty-read" is a property of database transaction and not Hibernate in general. When one transaction reads changes made by another transaction that has not yet been committed it is called dirty read. It is dangerous and unusual to use this type of transaction because the read data might get rolled back.
+
+whatever changes are made , are first written on the persistant object , hence making it dirty.
+
+What you are saying in the above line is that there have been changes made to object (but changes are not yet sent to database because ORM's like Hibernate delay the flushing the sql till the end of transaction). So the object after the change is now dirty but the same cannot be said about the transaction as no insert/update/delete have been sent to database.Talking about Hibernate - the reason it is considered "dirty" from application perspective is that the object representation of data read by hibernate can be changed by using setters and so the object or data becomes "dirty" which needs to be flushed to database at the end of transaction or the application may actually decide not to commit. The primary job of Hibernate is to keep track of this changed ("dirty") state and at the end of transaction generate appropriate insert/update/delete. So this dirtiness is difference between state initially read and state after changes made if any within the same transaction.
+
+#-- LockModes in Hibernate

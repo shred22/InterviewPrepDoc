@@ -1,0 +1,31 @@
+Oracle DB Config
+
+Global DB name : shreyasDB
+password : password
+
+Oracle 12c windows user
+unm : shred22
+paswd : Fireball
+
+Oracle 12c windows user
+unm : Oracle12User
+paswd : root
+
+Global Databse Name : orcl
+Administrator password : root
+
+Global Databse Name : oracleDB
+Administrator password : root
+
+Oracle 10g 
+
+Username : system
+Password : root
+
+username : shreyas
+password : root
+
+
+
+Postgre sql password
+root
