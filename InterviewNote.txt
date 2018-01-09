@@ -1173,3 +1173,91 @@ whatever changes are made , are first written on the persistant object , hence m
 What you are saying in the above line is that there have been changes made to object (but changes are not yet sent to database because ORM's like Hibernate delay the flushing the sql till the end of transaction). So the object after the change is now dirty but the same cannot be said about the transaction as no insert/update/delete have been sent to database.Talking about Hibernate - the reason it is considered "dirty" from application perspective is that the object representation of data read by hibernate can be changed by using setters and so the object or data becomes "dirty" which needs to be flushed to database at the end of transaction or the application may actually decide not to commit. The primary job of Hibernate is to keep track of this changed ("dirty") state and at the end of transaction generate appropriate insert/update/delete. So this dirtiness is difference between state initially read and state after changes made if any within the same transaction.
 
 #-- LockModes in Hibernate
+
+
+#-- A singleton class can be instantiated using reflection API with the following code : 
+Constructor<SingletonClass1>[] declaredConstructors = (Constructor<SingletonClass1>[]) SingletonClass1.class.getDeclaredConstructors();
+		
+		for(Constructor<SingletonClass1> constructor: declaredConstructors) {
+			if(Modifier.isPrivate(constructor.getModifiers())) {
+				constructor.setAccessible(true);
+				SingletonClass1 instance = constructor.newInstance(null);
+				System.out.println(instance.getClass());
+			}
+The above gets the declared constructors for SingletonClass1, checks if the Modifier is private and set is Accessible, then instamtiates a new Object of class SingletonClass1. this is how SingletonClass1 can be instantiated through Reflection API.If you need to defend against this attack, modify the constructor to make it throw an exception if it’s asked to create a second instance.
+
+#-- Singleton pattern in Java
+
+There are two common ways to implement singletons. Both are based on keeping the constructor private and exporting a public static member to provide access to the sole instance.
+
+In one approach, the member is a final field:
+
+// Singleton with public final field
+public class Elvis {
+public static final Elvis INSTANCE = new Elvis();
+private Elvis() { ... }
+public void leaveTheBuilding() { ... }
+}
+
+In Second approach to Singleton, the public member is a static factory method: with double null check for multithreaded safety
+
+
+public class Singleton {
+    private static Singleton uniqInstance;
+
+    private Singleton() {
+    }
+
+    public static Singleton getInstance() {
+        if (uniqInstance == null) {
+        synchronized(this) {
+            if (uniqInstance == null)
+                uniqInstance = new Singleton();
+            }
+        }
+        return uniqInstance;
+    }
+    // other useful methods here
+}
+
+#--  Serialization and Singleton
+
+sometimes in distributed systems, we need to implement a Serializable interface in our Singleton class so that we can store its state in a file system and retrieve it at a later point in time. Here is a small Singleton class that also implements a Serializable interface.
+
+public class SerializedSingleton implements Serializable{
+    private static final long serialVersionUID = -7604766932017737115L;
+    private SerializedSingleton(){}
+    private static class SingletonHelper{
+        private static final SerializedSingleton instance = new SerializedSingleton();
+    }
+    public static SerializedSingleton getInstance(){
+        return SingletonHelper.instance;
+    }
+
+	
+
+The problem with the above-serialized singleton class is that whenever we deserialize it, it will create a new instance of the class. Let’s see it with a simple program.
+
+public class SingletonSerializedTest {
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        SerializedSingleton instanceOne = SerializedSingleton.getInstance();
+        ObjectOutput out = new ObjectOutputStream(new FileOutputStream(
+                "filename.ser"));
+        out.writeObject(instanceOne);
+        out.close();
+        //deserailize from file to object
+        ObjectInput in = new ObjectInputStream(new FileInputStream(
+                "filename.ser"));
+        SerializedSingleton instanceTwo = (SerializedSingleton) in.readObject();
+        in.close();
+        System.out.println("instanceOne hashCode="+instanceOne.hashCode());
+        System.out.println("instanceTwo hashCode="+instanceTwo.hashCode());
+    }
+}
+
+
+It destroys the Singleton design pattern. To overcome this scenario, all we need to do is provide the implementation of the readResolve() method. This method will be invoked when you \ deserialize the object. Inside this method, you must return the existing instance to ensure a single instance application-wide.
+
+ protected Object readResolve() {
+        return instance;
+    }
