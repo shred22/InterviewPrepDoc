@@ -1,0 +1,65 @@
+#by default spring uses setter injection
+
+#--By default bean sccope is singleton
+if you get 2 objects from applicationContext for a singleton bean and call setter for a property on both the objects the value set by 2nd object will override the first one. As the bean scope is Singleton so only 1 instance.
+
+#--We can declare same bean class twice as long as the bean id's are different
+
+When to use setter injection and when to use constructor injection?
+in setter you set the value and then call the setter method.
+
+When you have a values that is required to initialized then use contructor -  as in Construcotr-arg it is mandatory to assign the value, not the case in setter injection
+
+Required Dependeccy - Use constructor Injection - value is mandatory to be provided
+Optional Dependency - Use setter injection - value is optional
+
+when you run a Spring application, and the bean scope is singleton all the bean objects will be created eagerly even if the user is not asking for the beans from ApplicationContext, in case of Prototype scope the bean is created only when requested
+
+if you want to wire a Spring property set autowire=true, and if the property name and bean id is same the dependency will be autowired
+
+In case of autowired if a bean declaration is defined with primary=true in bean declaration it will be the preferred choice in autowiring 	for ex : 
+<bean id="laptop" class="com.telusko.SpringDemos.Laptop" primary="true"></bean>        
+
+when bean sope is Singleton the beans will be loaded at load time
+
+
+Singleton beans will be instantiated when application is started and prototype beans are instantiated onle when requested.
+
+
+Autowire Types
+no – Default, no auto wiring, set it manually via “ref” attribute
+byName – Auto wiring by property name. If the name of a bean is same as the name of other bean property, auto wire it.
+byType – Auto wiring by property data type. If data type of a bean is compatible with the data type of other bean property, auto wire it.
+constructor – byType mode in constructor argument.
+autodetect – If a default constructor is found, use “autowired by constructor”; Otherwise, use “autowire by type”.
+
+@Scope annotation in /java based config to configure a bean as prototype
+
+Autowire with constructor injection try it
+
+@Primary annoatation in Spring to make a bean primary candidate for Autowiring
+
+@Qualifier can be used for autwired
+@Qualifier("laptop")
+
+@Bean(name="laptop")
+
+Try autowired constructor injection
+
+spring boot application property
+
+driverclass, url, username, passowrod to be specified in application.properties
+
+
+#--To do in weekend : 
+1. JAX-WS using Apache CXF with all the annotations
+2. Autowiring constructor in Spring
+3. Spring boot With JDbc as done in Session 4
+4. 1 hour Python
+
+#--@PostConstruct - any method annotated with this will be called after the object in initialized with the given values.
+@PreDestroy - before destroying the method
+
+to make sure destory methods are being called you can either close the applicationContext or you can register a shutdownhook on applicationContext.
+
+#--When you are doing automatic configuration with Component-scan and want to set some initial values for fields in your class you can use @Value annoatation, it is same as you used to set the value from property tag in springConfig file.

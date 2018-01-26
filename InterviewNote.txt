@@ -1261,3 +1261,147 @@ It destroys the Singleton design pattern. To overcome this scenario, all we need
  protected Object readResolve() {
         return instance;
     }
+	
+#-- Custom Class Loader in Java
+
+Java Runtime loads the classes dynamically at runtime using class loaders. By default a JVM will consists of these three class loaders:
+ 
+-- BootStrap Class loader This is the classloader which is loads all the core classes required by the JVM. They are basically the Java classes from the packages like java.lang.*, java.io.*, java.util.* etc. One can append additional class locations to this class loader using -Xbootclasspath/p: and -Xbootclasspath/a: JVM options.
+
+--Extension Class loader It is the classloader which is an alternative to the BootStrap class loader. One can drop the additional classes packaged in JAR file  in /lib/ext folder to get it picked by JVM.
+
+--System Class loader It is the classloader  which loads the classes specified in the CLASSPATH. It is also called as application classloader.
+
+JVM allows you  to create custom class loader which can address several problems. They are mostly useful in larger architectures consisting of several module/applications. Here are the advantages of the custom class loader:
+
+Modular architecture- They allow you to define multiple class loader allowing modular architecture. Each module can have their own classloader.
+
+Isolation- Clearly defines the scope of the class to within the class loader. It avoid conflicts if a class is present in two modules.
+
+Support Versioning - Supports different versions of class within same VM for different modules.
+
+Memory Management - Classes can be loaded and unloaded whenever required.
+
+Load classes from anywhere Classes can be loaded from anywhere, for ex, Database, Networks, or even define it on the fly.
+
+Add resources or classes dynamically All the above features allows you add classes or resources dynamically.
+Runtime Reloading Modified Classes Allows you to reload a class or classes at runtime by creating a child class loader to the actual class loader, which contains the modified classes.
+
+A good example of Custom class loader is JavaEE Application Server. Where each Web or Enterprise application will be class loader by itself.
+
+#--Java class loaders are used to load classes at runtime. ClassLoader in Java works on three principle: delegation, visibility and uniqueness. Delegation principle forward request of class loading to parent class loader and only loads the class, if parent is not able to find or load class. Visibility principle allows child class loader to see all the classes loaded by parent ClassLoader, but parent class loader can not see classes loaded by child. Uniqueness principle allows to load a class exactly once, which is basically achieved by delegation and ensures that child ClassLoader doesn't reload the class already loaded by parent
+
+#--@Component, @Service, @Repository, @Controller annoation in Spring
+
+The @Component annotation marks a java class as a bean so the component-scanning mechanism of spring can pick it up and pull it into the application context. To use this annotation, apply it over class as below:
+
+@Component
+public class EmployeeDAOImpl implements EmployeeDAO {
+    ...
+}
+2) Although above use of @Component is good enough but you can use more suitable annotation that provides additional benefits specifically for DAOs i.e. @Repository annotation. The @Repository annotation is a specialization of the @Component annotation with similar use and functionality. In addition to importing the DAOs into the DI container, it also makes the unchecked exceptions (thrown from DAO methods) eligible for translation into Spring DataAccessException.
+
+3) The @Service annotation is also a specialization of the component annotation. It doesn’t currently provide any additional behavior over the @Component annotation, but it’s a good idea to use @Service over @Component in service-layer classes because it specifies intent better. Additionally, tool support and additional behavior might rely on it in the future.
+
+4) @Controller annotation marks a class as a Spring Web MVC controller. It too is a @Component specialization, so beans marked with it are automatically imported into the DI container. When you add the @Controller annotation to a class, you can use another annotation i.e. @RequestMapping; to map URLs to instance methods of a class.
+
+ public interface EmployeeDAO
+{
+    public EmployeeDTO createNewEmployee();
+}
+ 
+@Repository ("employeeDao")
+public class EmployeeDAOImpl implements EmployeeDAO
+{
+    public EmployeeDTO createNewEmployee()
+    {
+        EmployeeDTO e = new EmployeeDTO();
+        e.setId(1);
+        e.setFirstName("Lokesh");
+        e.setLastName("Gupta");
+        return e;
+    }
+}
+-------------------------------------------------------
+public interface EmployeeManager
+{
+    public EmployeeDTO createNewEmployee();
+}
+ 
+ 
+@Service ("employeeManager")
+public class EmployeeManagerImpl implements EmployeeManager
+{
+    @Autowired
+    EmployeeDAO dao;
+     
+    public EmployeeDTO createNewEmployee()
+    {
+        return dao.createNewEmployee();
+    }
+}
+---------------------------------------------------------
+@Controller ("employeeController")
+public class EmployeeController
+{
+    @Autowired
+    EmployeeManager manager;
+     
+    public EmployeeDTO createNewEmployee()
+    {
+        return manager.createNewEmployee();
+    }
+}
+
+
+#-- @SOAPBinding in JAX-WS
+
+Demonstration of @SOAPBinding JAX-WS annotation has already been shown in first program in 1.1. This annotation is used to specify the SOAP messaging style which can either be RPC or DOCUMENT. This style represents the encoding style of message sent to and fro while using the web service.
+
+With RPC style a web service is capable of only using simple data types like integer or string. However, DOCUMENT style is capable of richer data types for a class let’s say Person, which can have attributes like String name, Address address etc.
+
+Document style indicates that in the underlying web service, underlying message shall contain full XML documents, whereas in the RPC style, the underlying message contains parameters and return values in request and response message respectively. By default the style is Document.
+
+The other important optional attribute is use. It represents the formatting style of the web service message. Its value can either be literal or encoded.
+
+Example usage of @SOAPBinding:
+
+@SOAPBinding(style=Style.DOCUMENT, use=Use.LITERAL)
+
+
+#-- @WebMethod annoation in JAX-WS
+
+In JAX-WS SOAP web services every public method is exposed as web service method, so no need to put @WebMethod annotation on public methods.
+@WebMethod(exclude="true") -> if this attribute is set on method then this method will be excluded by the server and will not be exposed a web service.
+
+#-- In JAX-WS SOAP web service if you make multiple calls on a single web service that is being  made on a single instance
+
+#-- Service First - Write the web service first, then the WSDL
+
+#-- Contract First - Write the WSDL first then the web service, as the interface would be fixed and client code can use the web service without any hesitation as the interface is fixed only the implementation at  server side can change.
+
+
+#-- every method in a web service takes in a message as input and a message as output in wsdl.even if there are multiple parameters in method it will take only 1 input and 1 output
+
+#-- Association b/w @WebService attribites and WSDL tags
+
+1. name -> name attribute of portType tag in WSDL
+2. serviceName -> name attribute of service Tag
+3. targetNamespace -> tragetNamespace in definitions tag
+4. portName -> name  attribute of port tag inside service 
+
+the action attribute of @WebMethod annotation corresponds to action attribute of input element in operation tag and soapAction in operation tag.
+operationName attribute of @WebMethod annotation corresponds to name attribute of operation tag.
+
+#-- use attribute of @SOAPBinding can have 2 values 
+
+1. literal - the values passed in as Input and output will be sent in as it is without encoding.
+2. encoded - this is not part of the specification, and the values will be sent encoded.
+
+#-- difference b/w Document style and RPC style web service
+
+In document style the schema is located in a separate xsd file where as in RPC it is embeded in wsdl itself
+
+In document style web service the SOAP request and response can be validated against schema.
+
+#--@WebResult annotation is used to name the element in SOAP response instead of return.
