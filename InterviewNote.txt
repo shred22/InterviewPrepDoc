@@ -906,22 +906,23 @@ An embeddable entity must be composed entirely of basic fields and attributes. A
 
 #-- What is the difference between session.save() and session.persist() method?
 
-No.	save()								persist()
+No.	save()														persist()
 
 1)	returns the identifier (Serializable) of the instance.		return nothing because its return type is void.
-2)	Syntax: public Serializable save(Object o)			Syntax: public void persist(Object o)
+2)	Syntax: public Serializable save(Object o)			        Syntax: public void persist(Object o)
 
 
 #--What is the difference between get and load method?
 
 The differences between get() and load() methods are given below.
 
-No.	get()									load()
+No.	get()													load()
 
 1)	Returns null if object is not found.					Throws ObjectNotFoundException if object is not found.
 2)	get() method always hit the database.					load() method doesn't hit the database.
-3)	It returns real object not proxy.					it returns proxy object.
-4)	It should be used if you are not sure about the existence of instance.	It should be used if you are sure that instance exists.
+3)	It returns real object not proxy.						it returns proxy object.
+4)	It should be used if you are not sure about             It should be used if you are sure that instance exists.
+    the existence of instance.	
 
 
 #-- create-drop, create, update properties in Hibernate
@@ -945,10 +946,10 @@ Use create or update to keep your tables.
 
 #--What is the difference between first level cache and second level cache?
 
-No.	First Level Cache					Second Level Cache
+No.	First Level Cache									Second Level Cache
 
 1)	First Level Cache is associated with Session.		Second Level Cache is associated with SessionFactory.
-2)	It is enabled by default.				It is not enabled by default.
+2)	It is enabled by default.							It is not enabled by default.
 
 
 #-- System.exit(0) 
@@ -1405,3 +1406,177 @@ In document style the schema is located in a separate xsd file where as in RPC i
 In document style web service the SOAP request and response can be validated against schema.
 
 #--@WebResult annotation is used to name the element in SOAP response instead of return.
+
+#-- Difference Between Interceptor and Filter
+
+#-- ContextLoaderListener in Spring
+
+ContextLoaderListener reads the Spring configuration file (with value given against contextConfigLocation in web.xml), parses it and loads the singleton bean defined in that config file. Similarly when we want to load prototype bean, we will use same webapplication context to load it. So we initialize the webapplication with ContextLoaderListener so that we read/parse/validate the config file in advance and whenever we wan to inject dependency we can straightaway do it without any delay. 
+ 
+ #-- what happens when messages start piling up in queues ?
+ 
+
+#-- SpringBusFactory
+ 
+The SpringBusFactory searches for all bean configuration files in the META-INF/cxf directories on your classpath, and builds an application context from them. The bean configuration files included in the application context construction are:
+
+META-INF/cxf/cxf.xml (e.g., in cxf-rt-core only)
+META-INF/cxf/cxf-extension.xml (e.g. in cxf-rt-bindings-soap)
+META-INF/cxf/cxf-property-editors.xml (e.g. in cxf-rt-transports-http)
+ 
+#-- Exchange in Camel and CXF
+
+Exchanges
+In addition to the concept of a Message, there is the concept of the Exchange. The exchange class holds a references to the in, out and fault messages for the current message exchange.
+
+It also holds properties specific to the exchange, and not just the message. For instance the Exchange holds the Service that is current being invoked in it.
+
+#-- Conduits in Apache CXF and Camel
+
+Conduits provide the basis for outgoing message sending. A Conduit is created from a ConduitInitiator. Sending a message is a multistep pocess:
+
+Call conduit.prepare(message): this starts the message sending. At this point a Conduit may initiate a connection and set the OutputStream for the outgoing message.
+
+Writing of the actual message to the OutputStream
+
+Call to conduit.close(message): this closes and disposes of any existing resources for the message sending.
+
+A message sender may also register a MessageObserver with the Conduit. If the Conduit is synchronous, the MessageObserver will be notified once a response has been received.
+
+
+#-- Destinations in Apache CXF and Camel
+
+Destinations are the basis for receiving incoming messages. A destination is created from a DestinationFactory:
+
+DestinationFactoryManager dfManager = bus.getExtension(DestinationFactoryManager.class);
+ 
+// Find a DestinationFactory for the SOAP HTTP transport
+DestinationFactory df = dfManager.getDestinationFactory("http://schemas.xmlsoap.org/wsdl/soap/http");
+ 
+// TODO: outline building of EndpointInfo
+EndpointInfo endpointInfo = ...;
+Destination destination = df.getDestination(endpointInfo);
+MessageObservers can then be registered with Destinations. These listen for incoming messages:
+
+MessageObserver myObserver = ...;
+destination.setMessageObserver(myObserver);
+The most common MessageObserver used in CXF is the ChainInitiationObserver. This takes the incoming message, creates a message Exchange & PhaseInterceptorChain, then starts the chain.
+
+#--Overview of Exception Handling Using SOAP Faults
+
+When a Web service request is being processed, if an error is encountered, the nature of the error needs to be communicated to the client, or sender of the request. Because clients can be written on a variety of platforms using different languages, there must exist a standard, platform-independent mechanism for communicating the error.
+
+The SOAP specification (available at http://www.w3.org/TR/soap/Opens a new window) defines a standard, platform-independent way of describing the error within the SOAP message using a SOAP fault.
+
+In JAX-WS, Java exceptions (java.lang.Exception) that are thrown by your Java Web service are mapped to a SOAP fault and returned to the client to communicate the reason for failure. SOAP faults can be one of the following types:
+
+Modeled—Maps to an exception that is thrown explicitly from the business logic of the Java code and mapped to wsdl:fault definitions in the WSDL file, when the Web service is deployed. In this case, the SOAP faults are predefined.
+
+Unmodeled—Maps to an exception (for example, java.lang.RuntimeException) that is generated at run-time when no business logic fault is defined in the WSDL. In this case, Java exceptions are represented as generic SOAP fault exceptions, javax.xml.ws.soap.SOAPFaultException.
+
+
+#-- xml files in CXF
+cxf.xml - <bean id="cxf" class="org.apache.cxf.bus.CXFBusImpl" />
+The core bus component is CXFBusImpl. The class acts more as an interceptor provider for incoming and outgoing requests to a web service endpoint. These interceptors, once defined, are available to all the endpoints in that context. The cxf.xml file also defines other infrastructure components such as BindingFactoryManager, ConduitFactoryManager, and so on. These components are made available as bus extensions.  One can access these infrastructure objects
+using the getExtension method. 
+
+#--@Resource annotation
+
+public class OrderProcessImpl implements OrderProcess {
+
+@Resource
+WebServiceContext wsc;
+ 
+The @Resource annotation is used to inject resource objects. The CXF container at runtime will inject an instance of WebServiceContext when the processOrder method is being invoked.
+
+
+#--Using the getIn and getOut methods on exchanges
+The Camel Exchange defines two methods for retrieving messages: getIn and getOut. The getIn method returns the incoming message, and the getOut method accesses the outbound message. There are two scenarios where the Camel end user will have to decide among using these methods:
+
+■ A read-only scenario, such as when you’re logging the incoming message
+■ A write scenario, such as when you’re transforming the message
+
+
+#-- The Spring Boot Maven plugin provides many convenient features:
+
+It collects all the jars on the classpath and builds a single, runnable "über-jar", which makes it more convenient to execute and transport your service.
+
+It searches for the public static void main() method to flag as a runnable class.
+
+It provides a built-in dependency resolver that sets the version number to match Spring Boot dependencies. You can override any version you wish, but it will default to Boot’s chosen set of versions.
+
+#--@EnableJMS annotationin Spring
+
+Let's start with the @EnableJms annotation, which gives a clear indication what it is for, but to be a bit more precise, it triggers the discovery of methods marked with the @JmsListener and creates the listeners themselves behind the scenes. 
+
+#-- @SpringBootApplication annotation
+
+@SpringBootApplication. This Spring Boot annotation is also annotated with @Configuration. In addition, it sets other configuration like Spring Boot auto configuration,  enables component scan for autowiring
+
+#-- JndiObjectFactoryBean class in spring framework
+
+The default behavior is to look up the JNDI object on startup and cache it.
+ * This can be customized through the "lookupOnStartup" and "cache" properties,
+ * using a {@link JndiObjectTargetSource} underneath. Note that you need to specify
+ * a "proxyInterface" in such a scenario, since the actual JNDI object type is not
+ * known in advance.
+ 
+#-- @Rollback is a test annotation that is used to indicate whether a test-managed transaction should be rolled back after the test method has completed.
+defaults to true
+
+#-- CXF Client with JAXWSProxyFactoryBean
+
+	  JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
+
+      factory.setServiceClass(ChangeStudentDetails.class);
+      factory.setAddress("http://localhost:8080/CXFTutorial/ChangeStudent?wsdl");
+      factory.getInInterceptors().add(new LoggingInInterceptor());
+      factory.getOutInterceptors().add(new LoggingOutInterceptor());
+	  
+      ChangeStudentDetails client = (ChangeStudentDetails) factory.create();
+
+	  
+#--Fail-Fast Iterators
+Fail-fast iterators in Java don’t play along when the underlying collection gets modified.
+
+Collections maintain an internal counter called modCount. Each time an item is added or removed from the Collection, this counter gets incremented.
+
+When iterating, on each next() call, the current value of modCount gets compared with the initial value. If there’s a mismatch, it throws ConcurrentModificationException which aborts the entire operation.
+
+Default iterators for Collections from java.util package such as ArrayList, HashMap, etc. are Fail-Fast.
+
+#--Fail-Safe Iterators
+Fail-Safe iterators favor lack of failures over the inconvenience of exception handling.
+
+Those iterators create a clone of the actual Collection and iterate over it. If any modification happens after the iterator is created, the copy still remains untouched. Hence, these Iterators continue looping over the Collection even if it’s modified.
+
+However, it’s important to remember that there’s no such thing as a truly Fail-Safe iterator. The correct term is Weakly Consistent.
+
+That means, if a Collection is modified while being iterated over, what the Iterator sees is weakly guaranteed. This behavior may be different for different Collections and is documented in Javadocs of each such Collection.
+
+The Fail-Safe Iterators have a few disadvantages, though. One disadvantage is that the Iterator isn’t guaranteed to return updated data from the Collection, as it’s working on the clone instead of the actual Collection.
+
+Another disadvantage is the overhead of creating a copy of the Collection, both regarding time and memory.
+
+Iterators on Collections from java.util.concurrent package such as ConcurrentHashMap, CopyOnWriteArrayList, etc. are Fail-Safe in nature.
+
+
+#-- Dirty Read
+
+Actually "dirty-read" is a property of database transaction and not Hibernate in general. When one transaction reads changes made by another transaction that has not yet been committed it is called dirty read. It is dangerous and unusual to use this type of transaction because the read data might get rolled back.
+
+
+#--Setting an Isolation Level in Hibernate
+
+for ex : hibernate.connection.isolation = 4
+
+Hibernate will then set this isolation level on every JDBC connection obtained from a connection pool before starting a transaction. The sensible values for this option are as follows (you can also find them as constants in java.sql.Connection):
+
+■ 1—Read uncommitted isolation
+■ 2—Read committed isolation
+■ 4—Repeatable read isolation
+■ 8—Serializable isolation
+
+#-- Locking in Hiibernate 
+
+Locking is a mechanism that prevents concurrent access to a particular item of data. When one transaction holds a lock on an item, no concurrent transaction can read and/or modify this item. A lock might be just a momentary lock, held while the item is being read, or it might be held until the completion of the transaction. A pessimistic lock is a lock that is acquired when an item of data is read and that is held until transaction completion.

@@ -1,0 +1,15 @@
+================================================CAMEL NOTES=======================================================
+
+
+#-- URL Configuration
+
+The URL configuration in Camel endpoints is just like regular URL we know from the Internet. You use ? and & to set the options.
+
+Endpoint endpint = camel.getEndpoint("file://target/subfolder?consumer.initialDelay=2000");
+
+When we have the endpoint we can create the consumer (just as in part 1 where we created a producer}. Creating the consumer requires a Processor where we implement the java code what should happen when a message arrives.
+
+
+
+   String url = "smtp://kshrey96@gmail.com?password=shreyas123&to=shreyas.dange22@gmail.com";
+    template.sendBodyAndHeader(url, body, "subject", "New incident reported");

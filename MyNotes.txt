@@ -1,6 +1,6 @@
-Git Commands : 
+===========Git Commands========= 
 
-git init - crate a repository wherever u fire this cmd
+git init - create a repository wherever u fire this cmd
 
 git status
 
@@ -10,8 +10,11 @@ git commit -m "commit message" - Committs to local repository
 
 git push -u origin master - Pushes the code to remote repository master branch.
 
+#-- To Clone a Git repository
+git clone https://github.com/code-not-found/cxf-jaxws.git
 
 
+===========Jenkins=========
 #-- To Restart Jenkins
 
 http://localhost:8080/safeRestart
@@ -28,8 +31,13 @@ restart restart jenkins
 reload to reload the configuration
 
 
+#-- To start jenkins on your laptop       - EntityReturnImpl(entity=com.orderProcessing.service.Customer, querySpaceUid=<gen:0>, path=com.orderProcessing.service.Customer)
+    - QuerySpaces
+       - EntityQuerySpaceImpl(uid=<gen:0>, entity=com.orderProcessing.service.Customer)
+          - SQL table alias mapping - customer0_
+          - alias suffix - 0_
+          - suffixed key columns - {custId1_2_0_}
 
-#-- To start jenkins on your laptop
 
 navigate to directory -> C:\Program Files (x86)\Jenkins
 
@@ -47,8 +55,10 @@ In Windows CMD.exe, Go to folder where jenkins-cli.jar file is located.
 
 Use Command to Safely Shutdown
 
-java -jar jenkins-cli.jar -s http://localhost:8080 safe-shutdown --username "shred22" 
---password "Drogon12@
+java -jar jenkins-cli.jar -s http://localhost:8080 safe-shutdown --username "shred22" --password "Drogon12@
+
+
+==============================Glassfish Server Admin Console=======================================
 
 #-- To start/stop Glassfish server on my Laptop
 
@@ -58,5 +68,36 @@ go to -> C:/glassfish4/bin directory. Then
  
  To stop glassfish server 
  asadmin stop-domain
+ 
+ URL : http://localhost:4848/
+ 
+================================Apache ActiveMq Broker==============================================
+
+#-- To Start Activemq, navigate to active Mq installation directory and fire the below command:
+
+URL : http://localhost:8161/admin
+
+cd E:\ProgMaterial\JarFiles\apache-activemq-5.10.2\bin
+
+activemq start
+
+The broker would be started at localhost:8161
+username : admin
+password : admin
+
+
+==============================Weblogic Server12.2.3.x Config====================================================
+
+Username : weblogic
+password : webl0gic
+domain   : dev_domain
+URL      : localhost:7001/console
+
+==============================Weblogic Server12.1.3 Config====================================================
+
+Username : weblogic
+password : webl0gic
+domain   : dev_domain
+URL      : localhost:7001/console
 
 
