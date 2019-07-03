@@ -1,0 +1,15 @@
+@Transactional in Spring 
+
+@Transactional only rolls back transactions for unchecked exceptions. For checked exceptions and their subclasses, it commits data. So although an exception is raised here, because it's a checked exception, Spring ignores it and commits the data to the database, making the system inconsistent.
+
+The Spring documentation says:
+
+While the EJB default behavior is for the EJB container to automatically roll back the transaction on a system exception (usually a runtime exception), EJB CMT does not roll back the transaction automatically on an application exception (that is, a checked exception other than java.rmi.RemoteException). While the Spring default behavior for declarative transaction management follows EJB convention (roll back is automatic only on unchecked exceptions), it is often useful to customize this. 
+
+Pay attention to the last line: “it is often useful to customize this.” So how can we customize it?
+
+It's very simple, just use the following with @Transactional:
+
+@Transactional(rollbackFor = Exception.class)
+
+So if you throw an Exception or a subclass of it, always use the above with the @Transactional annotation to tell Spring to roll back transactions if a checked exception occurs.
